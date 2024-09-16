@@ -1,25 +1,13 @@
 FROM ghcr.io/linuxserver/baseimage-kasmvnc:ubuntunoble
 
-# set version label
-ARG BUILD_DATE
-ARG VERSION
-LABEL build_version="Linuxserver.io version:- ${VERSION} Build-date:- ${BUILD_DATE}"
-LABEL maintainer="thelamer"
 ARG DEBIAN_FRONTEND="noninteractive"
 
-# title
 ENV TITLE="XPipe Webtop"
 ARG XPIPE_VERSION="11.3"
 ARG XPIPE_REPOSITORY="xpipe-io/xpipe"
 
 # prevent Ubuntu's firefox stub from being installed
 COPY /root/etc/apt/preferences.d/firefox-no-snap /etc/apt/preferences.d/firefox-no-snap
-
-RUN \
-  echo "**** add icon ****" && \
-  curl -o \
-    /kclient/public/icon.png \
-    https://rawcdn.githack.com/xpipe-io/xpipe/a097ae7a41131fa358b5343345557ad00a45c309/dist/logo/logo.png
 
 RUN  echo "**** install packages ****" && \
   add-apt-repository -y ppa:mozillateam/ppa && \
@@ -74,6 +62,12 @@ COPY /root /
 
 # ports and volumes
 VOLUME /config
+
+RUN \
+  echo "**** add icon ****" && \
+  curl -o \
+    /kclient/public/icon.png \
+    https://rawcdn.githack.com/xpipe-io/xpipe/a097ae7a41131fa358b5343345557ad00a45c309/dist/logo/logo.png
 
 RUN echo "**** XPipe ****" && \
   wget "https://github.com/$XPIPE_REPOSITORY/releases/download/$XPIPE_VERSION/xpipe-installer-linux-x86_64.deb" && \

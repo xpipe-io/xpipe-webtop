@@ -1,4 +1,4 @@
-name: Docker Image CI
+name: Docker Push
 
 on:
   push:
@@ -9,12 +9,6 @@ env:
   IMAGE_NAME: ${{ github.repository }}
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v4
-    - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag xpipe-webtop:$(date +%s)
   build-and-push-image:
     runs-on: ubuntu-latest
     permissions:

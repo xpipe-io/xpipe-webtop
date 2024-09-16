@@ -30,6 +30,13 @@ jobs:
         uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          labels: |
+            org.opencontainers.image.description=XPipe webtop container
+            org.opencontainers.image.vendor=xpipe.io
+            org.opencontainers.image.authors=xpipe.io
+            org.opencontainers.image.documentation=https://github.com/xpipe-io/xpipe-webtop
+          flavor: |
+            latest=true
       - name: Build and push Docker image
         id: push
         uses: docker/build-push-action@f2a1d5e99d037542a71f64918e516c093c6f3fc4

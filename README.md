@@ -30,25 +30,15 @@ To help you get started creating a container from this image you can either use 
 ---
 services:
   webtop:
-    image: lscr.io/linuxserver/webtop:latest
-    container_name: webtop
-    security_opt:
-      - seccomp:unconfined #optional
+    image: ghcr.io/xpipe-io/xpipe-webtop:latest
+    container_name: xpipe-webtop
     environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=Etc/UTC
       - SUBFOLDER=/ #optional
-      - TITLE=Webtop #optional
     volumes:
       - /path/to/data:/config
       - /var/run/docker.sock:/var/run/docker.sock #optional
     ports:
-      - 3000:3000
-      - 3001:3001
-    devices:
-      - /dev/dri:/dev/dri #optional
-    shm_size: "1gb" #optional
+      - 127.0.0.1:3001:3001
     restart: unless-stopped
 ```
 
@@ -56,21 +46,13 @@ services:
 
 ```bash
 docker run -d \
-  --name=webtop \
-  --security-opt seccomp=unconfined `#optional` \
-  -e PUID=1000 \
-  -e PGID=1000 \
-  -e TZ=Etc/UTC \
+  --name=xpipe-webtop \
   -e SUBFOLDER=/ `#optional` \
-  -e TITLE=Webtop `#optional` \
-  -p 3000:3000 \
-  -p 3001:3001 \
+  -p 127.0.0.1:3001:3001 \
   -v /path/to/data:/config \
   -v /var/run/docker.sock:/var/run/docker.sock `#optional` \
-  --device /dev/dri:/dev/dri `#optional` \
-  --shm-size="1gb" `#optional` \
   --restart unless-stopped \
-  lscr.io/linuxserver/webtop:latest
+  ghcr.io/xpipe-io/xpipe-webtop:latest
 ```
 
 ## Parameters

@@ -1,3 +1,4 @@
+ARG START_DOCKER=false
 FROM ghcr.io/linuxserver/baseimage-kasmvnc:ubuntunoble
 
 ARG DEBIAN_FRONTEND="noninteractive"

@@ -66,15 +66,19 @@ Containers are configured using parameters passed at runtime (such as those abov
 | `-v /config` | abc users home directory |
 | `-v /var/run/docker.sock` | Docker Socket on the system, if you want to use Docker in the container |
 
+## Public Test Builds
+
+There are also image variants published for the [XPipe PTB](https://github.com/xpipe-io/xpipe-ptb) in case you're interested in trying out early test versions. You can obtain these images by replacing the `:latest` tag with the `:ptb` tag.
+
 ## Building locally
 
 If you want to make local modifications to these images for development purposes or just to customize the logic:
 
 ```bash
-git clone https://github.com/linuxserver/docker-webtop.git
-cd docker-webtop
+git clone https://github.com/xpipe-io/xpipe-webtop.git
+cd xpipe-webtop
 docker build \
   --no-cache \
   --pull \
-  -t lscr.io/linuxserver/webtop:latest .
+  .
 ```

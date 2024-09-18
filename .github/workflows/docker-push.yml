@@ -29,6 +29,8 @@ jobs:
           echo "XPIPE_REPOSITORY=$XPIPE_REPOSITORY" >> $GITHUB_ENV
           XPIPE_PACKAGE=${{ contains(github.event.head_commit.message, '[release]') == true && 'xpipe' || 'xpipe-ptb' }}
           echo "XPIPE_PACKAGE=$XPIPE_PACKAGE" >> $GITHUB_ENV
+          XPIPE_TAG=${{ contains(github.event.head_commit.message, '[release]') == true && 'main' || 'ptb' }}
+          echo "XPIPE_TAG=$XPIPE_TAG" >> $GITHUB_ENV
 
       - name: Log in to the Container registry
         uses: docker/login-action@65b78e6e13532edd9afa3aa52ac7964289d1a9c1
@@ -46,7 +48,9 @@ jobs:
             org.opencontainers.image.authors=xpipe.io
             org.opencontainers.image.documentation=https://github.com/xpipe-io/xpipe-webtop
           flavor: |
-            latest=true
+            latest=${{ contains(github.event.head_commit.message, '[release]') == true }}
+          tags: |
+            type=raw,value=${{ env.XPIPE_TAG }}
       - name: Build and push Docker image
         id: push
         uses: docker/build-push-action@f2a1d5e99d037542a71f64918e516c093c6f3fc4

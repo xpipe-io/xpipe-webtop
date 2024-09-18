@@ -10,15 +10,6 @@ env:
 
 jobs:
   build-and-push-image:
-    strategy:
-      matrix:
-        config:
-        - main:
-          - repo: xpipe-io/xpipe
-          - tag: main
-        - ptb:
-          - repo: xpipe-io/xpipe-ptb
-          - tag: ptb
     runs-on: ubuntu-latest
     if: contains(github.event.head_commit.message, '[release]') || contains(github.event.head_commit.message, '[stage]')
     permissions:

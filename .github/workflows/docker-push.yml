@@ -10,7 +10,17 @@ env:
 
 jobs:
   build-and-push-image:
+    strategy:
+      matrix:
+        config:
+        - main:
+          - repo: xpipe-io/xpipe
+          - tag: main
+        - ptb:
+          - repo: xpipe-io/xpipe-ptb
+          - tag: ptb
     runs-on: ubuntu-latest
+    if: contains(github.event.head_commit.message, '[release]') || contains(github.event.head_commit.message, '[stage]')
     permissions:
       contents: read
       packages: write
@@ -19,6 +29,14 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+
+      - name: Set variables
+        run: |
+          XPIPE_VERSION=$(cat "${{ github.workspace }}/xpipe-webtop/${{ contains(github.event.head_commit.message, '[release]') == true && 'version-main' || 'version-ptb' }}")
+          echo "XPIPE_VERSION=$XPIPE_VERSION" >> $GITHUB_ENV
+          XPIPE_REPOSITORY=${{ contains(github.event.head_commit.message, '[release]') == true && 'xpipe-io/xpipe' || 'xpipe-io/xpipe-ptb' }}
+          echo "XPIPE_REPOSITORY=$XPIPE_REPOSITORY" >> $GITHUB_ENV
+
       - name: Log in to the Container registry
         uses: docker/login-action@65b78e6e13532edd9afa3aa52ac7964289d1a9c1
         with:
@@ -31,7 +49,6 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           labels: |
-            org.opencontainers.image.description=XPipe webtop container
             org.opencontainers.image.vendor=xpipe.io
             org.opencontainers.image.authors=xpipe.io
             org.opencontainers.image.documentation=https://github.com/xpipe-io/xpipe-webtop
@@ -45,6 +62,9 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          build-args: |
+            "XPIPE_VERSION=${{ env.XPIPE_VERSION }}"
+            "XPIPE_REPOSITORY=${{ env.XPIPE_REPOSITORY }}"
       - name: Generate artifact attestation
         uses: actions/attest-build-provenance@v1
         with:

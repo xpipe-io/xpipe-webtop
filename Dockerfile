@@ -3,8 +3,8 @@ FROM ghcr.io/linuxserver/baseimage-kasmvnc:ubuntunoble
 ARG DEBIAN_FRONTEND="noninteractive"
 
 ENV TITLE="XPipe Webtop"
-ARG XPIPE_VERSION="11.3"
-ARG XPIPE_REPOSITORY="xpipe-io/xpipe"
+ARG XPIPE_VERSION
+ARG XPIPE_REPOSITORY
 
 # prevent Ubuntu's firefox stub from being installed
 COPY /root/etc/apt/preferences.d/firefox-no-snap /etc/apt/preferences.d/firefox-no-snap

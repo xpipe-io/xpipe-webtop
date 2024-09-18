@@ -23,7 +23,7 @@ jobs:
 
       - name: Set variables
         run: |
-          XPIPE_VERSION=$(cat "${{ github.workspace }}/xpipe-webtop/${{ contains(github.event.head_commit.message, '[release]') == true && 'version-main' || 'version-ptb' }}")
+          XPIPE_VERSION=$(cat "${{ github.workspace }}/${{ contains(github.event.head_commit.message, '[release]') == true && 'version-main' || 'version-ptb' }}")
           echo "XPIPE_VERSION=$XPIPE_VERSION" >> $GITHUB_ENV
           XPIPE_REPOSITORY=${{ contains(github.event.head_commit.message, '[release]') == true && 'xpipe-io/xpipe' || 'xpipe-io/xpipe-ptb' }}
           echo "XPIPE_REPOSITORY=$XPIPE_REPOSITORY" >> $GITHUB_ENV

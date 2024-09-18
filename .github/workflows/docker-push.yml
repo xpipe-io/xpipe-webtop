@@ -27,6 +27,8 @@ jobs:
           echo "XPIPE_VERSION=$XPIPE_VERSION" >> $GITHUB_ENV
           XPIPE_REPOSITORY=${{ contains(github.event.head_commit.message, '[release]') == true && 'xpipe-io/xpipe' || 'xpipe-io/xpipe-ptb' }}
           echo "XPIPE_REPOSITORY=$XPIPE_REPOSITORY" >> $GITHUB_ENV
+          XPIPE_PACKAGE=${{ contains(github.event.head_commit.message, '[release]') == true && 'xpipe' || 'xpipe-ptb' }}
+          echo "XPIPE_PACKAGE=$XPIPE_PACKAGE" >> $GITHUB_ENV
 
       - name: Log in to the Container registry
         uses: docker/login-action@65b78e6e13532edd9afa3aa52ac7964289d1a9c1
@@ -56,6 +58,7 @@ jobs:
           build-args: |
             "XPIPE_VERSION=${{ env.XPIPE_VERSION }}"
             "XPIPE_REPOSITORY=${{ env.XPIPE_REPOSITORY }}"
+            "XPIPE_PACKAGE=${{ env.XPIPE_PACKAGE }}"
       - name: Generate artifact attestation
         uses: actions/attest-build-provenance@v1
         with:

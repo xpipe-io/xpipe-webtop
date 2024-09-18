@@ -5,6 +5,7 @@ ARG DEBIAN_FRONTEND="noninteractive"
 ENV TITLE="XPipe Webtop"
 ARG XPIPE_VERSION
 ARG XPIPE_REPOSITORY
+ARG XPIPE_PACKAGE
 
 # prevent Ubuntu's firefox stub from being installed
 COPY /root/etc/apt/preferences.d/firefox-no-snap /etc/apt/preferences.d/firefox-no-snap
@@ -76,4 +77,4 @@ RUN echo "**** XPipe ****" && \
   apt-get install --no-install-recommends -y "./xpipe-installer-linux-x86_64.deb" && \
   rm "./xpipe-installer-linux-x86_64.deb"
 
-RUN mkdir -p "/config/.config/kdedefaults/autostart/" && ln -s "/usr/share/applications/xpipe.desktop" "/config/.config/kdedefaults/autostart/xpipe.desktop"
+RUN mkdir -p "/config/.config/kdedefaults/autostart/" && ln -s "/usr/share/applications/$XPIPE_PACKAGE.desktop" "/config/.config/kdedefaults/autostart/$XPIPE_PACKAGE.desktop"

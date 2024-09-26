@@ -8,8 +8,8 @@ This docker image is a fork of https://github.com/linuxserver/docker-webtop.
 
 The Webtop can be accessed at:
 
-* http://yourhost:3000/
-* https://yourhost:3001/
+* http://localhost:3000/
+* https://localhost:3001/
 
 ## Authentication
 

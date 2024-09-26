@@ -6,7 +6,16 @@ This docker image is a fork of https://github.com/linuxserver/docker-webtop that
 
 The Webtop can be accessed at:
 
+* http://yourhost:3000/
 * https://yourhost:3001/
+
+## Authentication
+
+Note that the authentication setup has to be done by you. By default, there is no authentication enabled and the webtop will be available to everyone.
+So you have to be careful not to publicly expose it in that state.
+As seen below, there are options to use basic HTTP authentication to restrict access.
+However, this might also not be considered very secure, and it is recommended to use a proper separate authentication solution in front of the actual webtop environment.
+Examples are Authelia, Authentik, KeyCloak, and others.
 
 ### Options in all KasmVNC based GUI containers
 
@@ -38,6 +47,7 @@ services:
       - /path/to/data:/config
       - /var/run/docker.sock:/var/run/docker.sock #optional
     ports:
+      - 127.0.0.1:3000:3000
       - 127.0.0.1:3001:3001
     restart: unless-stopped
 ```
@@ -48,23 +58,13 @@ services:
 docker run -d \
   --name=xpipe-webtop \
   -e SUBFOLDER=/ `#optional` \
+  -p 127.0.0.1:3000:3000 \
   -p 127.0.0.1:3001:3001 \
   -v /path/to/data:/config \
   -v /var/run/docker.sock:/var/run/docker.sock `#optional` \
   --restart unless-stopped \
   ghcr.io/xpipe-io/xpipe-webtop:latest
 ```
-
-## Parameters
-
-Containers are configured using parameters passed at runtime (such as those above). These parameters are separated by a colon and indicate `<external>:<internal>` respectively. For example, `-p 8080:80` would expose port `80` from inside the container to be accessible from the host's IP on port `8080` outside the container.
-
-| Parameter | Function |
-| :----: | --- |
-| `-p 3001` | Web Desktop GUI HTTPS |
-| `-e SUBFOLDER=/` | Specify a subfolder to use with reverse proxies, IE `/subfolder/` |
-| `-v /config` | abc users home directory |
-| `-v /var/run/docker.sock` | Docker Socket on the system, if you want to use Docker in the container |
 
 ## Public Test Builds
 

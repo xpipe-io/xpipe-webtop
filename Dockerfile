@@ -39,7 +39,7 @@ RUN  echo "**** install packages ****" && \
     gedit \
     terminator \
     systemsettings && \
- apt-get remove plasma-welcome && \
+ apt-get remove -y plasma-welcome && \
  apt-get autoclean && \
  rm -rf \
    /config/.cache \

@@ -27,7 +27,7 @@ RUN  echo "**** install packages ****" && \
     kwin-x11 \
     kwrite \
     wget \
-     git \
+    git \
     plasma-desktop \
     plasma-workspace \
     plymouth-theme-kubuntu-logo \
@@ -39,6 +39,7 @@ RUN  echo "**** install packages ****" && \
     gedit \
     terminator \
     systemsettings && \
+ apt-get remove plasma-welcome && \
  apt-get autoclean && \
  rm -rf \
    /config/.cache \

@@ -63,7 +63,7 @@ VOLUME /config
 
 RUN \
   echo "**** add icon ****" && \
-  curl -o \
+  curl -L -o \
     /kclient/public/icon.png \
     https://rawcdn.githack.com/xpipe-io/xpipe/a097ae7a41131fa358b5343345557ad00a45c309/dist/logo/logo.png
 
@@ -78,6 +78,5 @@ RUN mkdir -p "/config/.config/kdedefaults/autostart/" && ln -s "/usr/share/appli
 
 RUN echo "**** kde tweaks ****" && \
   sed -i \
-    "s/applications:org.kde.discover.desktop,/applications:org.kde.konsole.desktop,/g;s#preferred://browser#preferred://browser,/applications:$XPIPE_PACKAGE.desktop,#g" \
-    /usr/share/plasma/plasmoids/org.kde.plasma.taskmanager/contents/config/main.xml && \
-     xdg-settings set default-web-browser firefox.desktop
+    "s/applications:org.kde.discover.desktop,/applications:org.kde.konsole.desktop,/g;s#preferred://browser#preferred://browser,applications:$XPIPE_PACKAGE.desktop#g" \
+    /usr/share/plasma/plasmoids/org.kde.plasma.taskmanager/contents/config/main.xml

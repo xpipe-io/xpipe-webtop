@@ -55,11 +55,6 @@ RUN echo "**** VsCode ****" && \
   apt-get install --no-install-recommends -y "./vscode.deb" && \
   rm "./vscode.deb"
 
-RUN  echo "**** kde tweaks ****" && \
-  sed -i \
-    's/applications:org.kde.discover.desktop,/applications:org.kde.konsole.desktop,/g' \
-    /usr/share/plasma/plasmoids/org.kde.plasma.taskmanager/contents/config/main.xml
-
 # add local files
 COPY /root /
 
@@ -80,3 +75,9 @@ RUN echo "**** XPipe ****" && \
   rm "./xpipe-installer-linux-x86_64.deb"
 
 RUN mkdir -p "/config/.config/kdedefaults/autostart/" && ln -s "/usr/share/applications/$XPIPE_PACKAGE.desktop" "/config/.config/kdedefaults/autostart/$XPIPE_PACKAGE.desktop"
+
+RUN echo "**** kde tweaks ****" && \
+  sed -i \
+    "s/applications:org.kde.discover.desktop,/applications:org.kde.konsole.desktop,/g;s#preferred://browser#preferred://browser,/applications:$XPIPE_PACKAGE.desktop,#g" \
+    /usr/share/plasma/plasmoids/org.kde.plasma.taskmanager/contents/config/main.xml && \
+     xdg-settings set default-web-browser firefox.desktop

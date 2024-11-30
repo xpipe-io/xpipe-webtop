@@ -1,3 +1,5 @@
+![Webtop](https://github.com/xpipe-io/.github/raw/main/img/webtop.png)
+
 # XPipe Webtop
 
 XPipe Webtop is a web-based desktop environment that can be run in a container and accessed from a browser via KasmVNC.

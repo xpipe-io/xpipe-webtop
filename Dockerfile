@@ -59,8 +59,8 @@ RUN echo "**** VsCode ****" && \
 COPY /root /
 
 # ports and volumes
-VOLUME /config
 EXPOSE 3000
+VOLUME /config
 
 RUN \
   echo "**** add icon ****" && \

@@ -60,6 +60,7 @@ COPY /root /
 
 # ports and volumes
 VOLUME /config
+EXPOSE 3000
 
 RUN \
   echo "**** add icon ****" && \

@@ -1,5 +1,12 @@
-ARG START_DOCKER=false
-FROM ghcr.io/linuxserver/baseimage-kasmvnc:ubuntunoble
+FROM scratch AS base
+
+FROM base AS build-arm64
+ENV BASE_IMAGE_TAG=arm64v8-ubuntunoble
+
+FROM base AS build-amd64
+ENV BASE_IMAGE_TAG=ubuntunoble
+
+FROM ghcr.io/linuxserver/baseimage-kasmvnc:${BASE_IMAGE_TAG}
 
 ARG DEBIAN_FRONTEND="noninteractive"
 

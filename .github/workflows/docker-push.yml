@@ -51,12 +51,11 @@ jobs:
             latest=${{ contains(github.event.head_commit.message, '[release]') == true }}
           tags: |
             type=raw,value=${{ env.XPIPE_TAG }}
-      - name: Build and push Docker image (amd64)
+      - name: Build and push Docker image
         id: push
         uses: docker/build-push-action@f2a1d5e99d037542a71f64918e516c093c6f3fc4
         with:
           context: .
-          file: ./Dockerfile
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
@@ -64,22 +63,7 @@ jobs:
             "XPIPE_VERSION=${{ env.XPIPE_VERSION }}"
             "XPIPE_REPOSITORY=${{ env.XPIPE_REPOSITORY }}"
             "XPIPE_PACKAGE=${{ env.XPIPE_PACKAGE }}"
-          platforms: linux/amd64
-      - name: Build and push Docker image (arm64)
-        id: push
-        uses: docker/build-push-action@f2a1d5e99d037542a71f64918e516c093c6f3fc4
-        with:
-          context: .
-          file: ./Dockerfile.aarch64
-          push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
-          build-args: |
-            "XPIPE_VERSION=${{ env.XPIPE_VERSION }}"
-            "XPIPE_REPOSITORY=${{ env.XPIPE_REPOSITORY }}"
-            "XPIPE_PACKAGE=${{ env.XPIPE_PACKAGE }}"
-          platforms: linux/arm64
-          if: contains(github.event.head_commit.message, '[release]')
+          platforms: linux/amd64,linux/arm64
       - name: Generate artifact attestation
         uses: actions/attest-build-provenance@v1
         with:

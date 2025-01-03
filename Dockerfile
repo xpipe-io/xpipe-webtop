@@ -1,12 +1,10 @@
 FROM scratch AS base
 
 FROM base AS build-arm64
-ENV BASE_IMAGE_TAG="arm64v8-ubuntunoble"
+FROM ghcr.io/linuxserver/baseimage-kasmvnc:arm64v8-ubuntunoble
 
 FROM base AS build-amd64
-ENV BASE_IMAGE_TAG="ubuntunoble"
-
-FROM ghcr.io/linuxserver/baseimage-kasmvnc:${BASE_IMAGE_TAG}
+FROM ghcr.io/linuxserver/baseimage-kasmvnc:ubuntunoble
 
 ARG DEBIAN_FRONTEND="noninteractive"
 

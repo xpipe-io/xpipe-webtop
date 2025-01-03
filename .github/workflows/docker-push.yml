@@ -51,6 +51,10 @@ jobs:
             latest=${{ contains(github.event.head_commit.message, '[release]') == true }}
           tags: |
             type=raw,value=${{ env.XPIPE_TAG }}
+      - name: Setup buildx
+        uses: docker/setup-buildx-action@v1
+        with:
+          use: linux/amd64,linux/arm64
       - name: Build and push Docker image
         id: push
         uses: docker/build-push-action@f2a1d5e99d037542a71f64918e516c093c6f3fc4

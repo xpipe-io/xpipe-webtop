@@ -1,14 +1,14 @@
 FROM scratch AS base
 
-FROM base AS build-amd64
-FROM ghcr.io/linuxserver/baseimage-kasmvnc:ubuntunoble
-ENV VSCODE_LINK="https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-x64"
-ENV XPIPE_ARTIFACT="xpipe-installer-linux-x86_64.deb"
-
 FROM base AS build-arm64
 FROM ghcr.io/linuxserver/baseimage-kasmvnc:arm64v8-ubuntunoble
 ENV VSCODE_LINK="https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-arm64"
 ENV XPIPE_ARTIFACT="xpipe-installer-linux-arm64.deb"
+
+FROM base AS build-amd64
+FROM ghcr.io/linuxserver/baseimage-kasmvnc:ubuntunoble
+ENV VSCODE_LINK="https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-x64"
+ENV XPIPE_ARTIFACT="xpipe-installer-linux-x86_64.deb"
 
 FROM build-${TARGETARCH} AS build
 

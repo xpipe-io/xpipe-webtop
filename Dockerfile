@@ -2,13 +2,9 @@ FROM scratch AS base
 
 FROM base AS build-arm64
 FROM ghcr.io/linuxserver/baseimage-kasmvnc:arm64v8-ubuntunoble
-ENV VSCODE_LINK="https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-arm64"
-ENV XPIPE_ARTIFACT="xpipe-installer-linux-arm64.deb"
 
 FROM base AS build-amd64
 FROM ghcr.io/linuxserver/baseimage-kasmvnc:ubuntunoble
-ENV VSCODE_LINK="https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-x64"
-ENV XPIPE_ARTIFACT="xpipe-installer-linux-x86_64.deb"
 
 FROM build-${TARGETARCH} AS build
 
@@ -60,6 +56,7 @@ RUN  echo "**** install packages ****" && \
    /tmp/*
 
 RUN echo "**** VsCode ****" && \
+  if [ "$TARGETPLATFORM" = "linux/amd64" ]; then VSCODE_LINK="https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-x64"; else VSCODE_LINK="https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-arm64"; fi && \
   wget -O vscode.deb "${VSCODE_LINK}" && \
   DEBIAN_FRONTEND=noninteractive \
   apt-get update && \
@@ -80,6 +77,7 @@ RUN \
     https://rawcdn.githack.com/xpipe-io/xpipe/a097ae7a41131fa358b5343345557ad00a45c309/dist/logo/logo.png
 
 RUN echo "**** XPipe ****" && \
+  if [ "$TARGETPLATFORM" = "linux/amd64" ]; then XPIPE_ARTIFACT="xpipe-installer-linux-x86_64.deb"; else XPIPE_ARTIFACT="xpipe-installer-linux-arm64.deb"; fi && \
   wget "https://github.com/$XPIPE_REPOSITORY/releases/download/$XPIPE_VERSION/${XPIPE_ARTIFACT}" && \
   DEBIAN_FRONTEND=noninteractive \
   apt-get update && \

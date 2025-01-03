@@ -63,7 +63,7 @@ jobs:
             "XPIPE_VERSION=${{ env.XPIPE_VERSION }}"
             "XPIPE_REPOSITORY=${{ env.XPIPE_REPOSITORY }}"
             "XPIPE_PACKAGE=${{ env.XPIPE_PACKAGE }}"
-          platforms: linux/amd64,linux/arm64,linux/arm/v7
+          platforms: linux/amd64,linux/arm64
       - name: Generate artifact attestation
         uses: actions/attest-build-provenance@v1
         with:

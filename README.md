@@ -25,8 +25,6 @@ Examples are Authelia, Authentik, KeyCloak, and others.
 
 This container is based on [Docker Baseimage KasmVNC](https://github.com/linuxserver/docker-baseimage-kasmvnc) which means there are additional environment variables and run configurations to enable or disable specific functionality.
 
-#### Optional environment variables
-
 | Variable | Description |
 | :----: | --- |
 | CUSTOM_USER | HTTP Basic auth username, abc is default. |
@@ -36,6 +34,8 @@ This container is based on [Docker Baseimage KasmVNC](https://github.com/linuxse
 ## Usage
 
 To help you get started creating a container from this image you can either use docker-compose or the docker cli.
+
+The webtop image is available for both `linux/amd64` and `linux/arm64` platforms.
 
 ### docker-compose (recommended, [click here for more info](https://docs.linuxserver.io/general/docker-compose))
 

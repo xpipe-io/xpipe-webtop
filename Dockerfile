@@ -1,12 +1,4 @@
-FROM scratch AS base
-
-FROM base AS build-arm64
-FROM ghcr.io/linuxserver/baseimage-kasmvnc:arm64v8-ubuntunoble
-
-FROM base AS build-amd64
-FROM ghcr.io/linuxserver/baseimage-kasmvnc:ubuntunoble
-
-FROM build-${TARGETARCH} AS build
+FROM ghcr.io/linuxserver/baseimage-kasmvnc:ubuntunoble AS build
 
 ARG DEBIAN_FRONTEND="noninteractive"
 

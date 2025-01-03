@@ -6,6 +6,7 @@ ENV TITLE="XPipe Webtop"
 ARG XPIPE_VERSION
 ARG XPIPE_REPOSITORY
 ARG XPIPE_PACKAGE
+ARG TARGETPLATFORM
 
 # prevent Ubuntu's firefox stub from being installed
 COPY /root/etc/apt/preferences.d/firefox-no-snap /etc/apt/preferences.d/firefox-no-snap
@@ -47,7 +48,7 @@ RUN  echo "**** install packages ****" && \
    /var/tmp/* \
    /tmp/*
 
-RUN echo "**** VsCode ****" && \
+RUN echo "**** VsCode **** ($TARGETPLATFORM)" && \
   if [ "$TARGETPLATFORM" = "linux/amd64" ]; then VSCODE_LINK="https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-x64"; else VSCODE_LINK="https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-arm64"; fi && \
   wget -O vscode.deb "${VSCODE_LINK}" && \
   DEBIAN_FRONTEND=noninteractive \
@@ -68,7 +69,7 @@ RUN \
     /kclient/public/icon.png \
     https://rawcdn.githack.com/xpipe-io/xpipe/a097ae7a41131fa358b5343345557ad00a45c309/dist/logo/logo.png
 
-RUN echo "**** XPipe ****" && \
+RUN echo "**** XPipe **** ($TARGETPLATFORM)" && \
   if [ "$TARGETPLATFORM" = "linux/amd64" ]; then XPIPE_ARTIFACT="xpipe-installer-linux-x86_64.deb"; else XPIPE_ARTIFACT="xpipe-installer-linux-arm64.deb"; fi && \
   wget "https://github.com/$XPIPE_REPOSITORY/releases/download/$XPIPE_VERSION/${XPIPE_ARTIFACT}" && \
   DEBIAN_FRONTEND=noninteractive \

@@ -1,11 +1,11 @@
-ARG BASE_IMAGE_TAG
+ENV BASE_IMAGE_TAG=""
 FROM scratch AS base
 
 FROM base AS build-arm64
-ARG BASE_IMAGE_TAG=arm64v8-ubuntunoble
+ENV BASE_IMAGE_TAG="arm64v8-ubuntunoble"
 
 FROM base AS build-amd64
-ARG BASE_IMAGE_TAG=ubuntunoble
+ENV BASE_IMAGE_TAG="ubuntunoble"
 
 FROM ghcr.io/linuxserver/baseimage-kasmvnc:${BASE_IMAGE_TAG}
 

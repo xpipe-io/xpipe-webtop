@@ -10,7 +10,7 @@ FROM ghcr.io/linuxserver/baseimage-kasmvnc:arm64v8-ubuntunoble
 ENV VSCODE_LINK="https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-arm64"
 ENV XPIPE_ARTIFACT="xpipe-installer-linux-arm64.deb"
 
-FROM build-${TARGETARCH} AS build-arm64
+FROM build-${TARGETARCH} AS build
 
 ARG DEBIAN_FRONTEND="noninteractive"
 

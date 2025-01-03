@@ -1,4 +1,3 @@
-ENV BASE_IMAGE_TAG=""
 FROM scratch AS base
 
 FROM base AS build-arm64

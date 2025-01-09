@@ -38,6 +38,9 @@ RUN  echo "**** install packages ****" && \
     kate \
     gedit \
     terminator \
+    fonts-noto \
+    fonts-noto-cjk \
+    remmina \
     systemsettings && \
  apt-get remove -y plasma-welcome && \
  apt-get autoclean && \

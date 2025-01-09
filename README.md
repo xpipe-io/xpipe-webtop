@@ -4,7 +4,6 @@
 
 XPipe Webtop is a web-based desktop environment that can be run in a container and accessed from a browser via KasmVNC.
 The desktop environment comes with XPipe and various terminals and editors preinstalled and configured.
-This docker image is a fork of https://github.com/linuxserver/docker-webtop.
 
 ## Application Setup
 

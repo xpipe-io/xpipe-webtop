@@ -80,7 +80,7 @@ RUN echo "**** XPipe **** ($TARGETPLATFORM)" && \
   apt-get install --no-install-recommends -y "./${XPIPE_ARTIFACT}" && \
   rm "./${XPIPE_ARTIFACT}"
 
-RUN mkdir -p "/config/.config/kdedefaults/autostart/" && ln -s "/usr/share/applications/$XPIPE_PACKAGE.desktop" "/config/.config/kdedefaults/autostart/$XPIPE_PACKAGE.desktop"
+RUN mkdir -p "$HOME/.config/kdedefaults/autostart/" && ln -s "/usr/share/applications/$XPIPE_PACKAGE.desktop" "$HOME/.config/kdedefaults/autostart/$XPIPE_PACKAGE.desktop"
 
 RUN echo "**** kde tweaks ****" && \
   sed -i \

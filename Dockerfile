@@ -2,6 +2,7 @@ FROM ghcr.io/linuxserver/baseimage-kasmvnc:ubuntunoble AS build
 
 ARG DEBIAN_FRONTEND="noninteractive"
 
+ENV HOME=/config
 ENV TITLE="XPipe Webtop"
 ARG XPIPE_VERSION
 ARG XPIPE_REPOSITORY

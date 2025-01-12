@@ -5,6 +5,8 @@
 XPipe Webtop is a web-based desktop environment that can be run in a container and accessed from a browser via KasmVNC.
 The desktop environment comes with XPipe and various terminals and editors preinstalled and configured.
 
+If you are using Kasm Workspaces, this image is also available in the [XPipe Kasm Registry](https://github.com/xpipe-io/kasm-registry).
+
 ## Application Setup
 
 The Webtop can be accessed at:

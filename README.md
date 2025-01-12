@@ -71,10 +71,6 @@ docker run -d \
   ghcr.io/xpipe-io/xpipe-webtop:latest
 ```
 
-## Public Test Builds
-
-There are also image variants published for the [XPipe PTB](https://github.com/xpipe-io/xpipe-ptb) in case you're interested in trying out early test versions. You can obtain these images by replacing the `:latest` tag with the `:ptb` tag.
-
 ## Building locally
 
 If you want to make local modifications to these images for development purposes or just to customize the logic:

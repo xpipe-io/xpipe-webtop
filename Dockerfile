@@ -2,7 +2,6 @@ FROM ghcr.io/linuxserver/baseimage-kasmvnc:ubuntunoble AS build
 
 ARG DEBIAN_FRONTEND="noninteractive"
 
-ENV HOME=/config
 ENV TITLE="XPipe Webtop"
 ARG XPIPE_VERSION
 ARG XPIPE_REPOSITORY
@@ -81,7 +80,7 @@ RUN echo "**** XPipe **** ($TARGETPLATFORM)" && \
   apt-get install --no-install-recommends -y "./${XPIPE_ARTIFACT}" && \
   rm "./${XPIPE_ARTIFACT}"
 
-RUN mkdir -p "$HOME/.config/kdedefaults/autostart/" && ln -s "/usr/share/applications/$XPIPE_PACKAGE.desktop" "$HOME/.config/kdedefaults/autostart/$XPIPE_PACKAGE.desktop"
+RUN mkdir -p "/etc/xdg/autostart/" && ln -s "/usr/share/applications/$XPIPE_PACKAGE.desktop" "/etc/xdg/autostart/$XPIPE_PACKAGE.desktop"
 
 RUN echo "**** kde tweaks ****" && \
   sed -i \

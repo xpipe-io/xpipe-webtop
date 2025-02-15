@@ -11,7 +11,7 @@ ARG TARGETPLATFORM
 # prevent Ubuntu's firefox stub from being installed
 COPY /root/etc/apt/preferences.d/firefox-no-snap /etc/apt/preferences.d/firefox-no-snap
 
-RUN  echo "**** install packages ****" && \
+RUN  echo "**** install base packages ****" && \
   add-apt-repository -y ppa:mozillateam/ppa && \
   apt-get update && \
   DEBIAN_FRONTEND=noninteractive \
@@ -22,7 +22,6 @@ RUN  echo "**** install packages ****" && \
     kde-config-gtk-style \
     kdialog \
     kio-extras \
-    konsole \
     kubuntu-settings-desktop \
     kwin-x11 \
     kwrite \
@@ -32,15 +31,8 @@ RUN  echo "**** install packages ****" && \
     plasma-workspace \
     plymouth-theme-kubuntu-logo \
     qml-module-qt-labs-platform \
-    alacritty \
-    kitty \
-    tilix \
-    kate \
-    gedit \
-    terminator \
     fonts-noto \
     fonts-noto-cjk \
-    remmina \
     systemsettings && \
  apt-get remove -y plasma-welcome && \
  apt-get autoclean && \
@@ -72,6 +64,21 @@ RUN \
     /kclient/public/icon.png \
     https://rawcdn.githack.com/xpipe-io/xpipe/a097ae7a41131fa358b5343345557ad00a45c309/dist/logo/logo.png
 
+RUN  echo "**** install tool packages ****" && \
+  DEBIAN_FRONTEND=noninteractive \
+  apt-get install --no-install-recommends -y \
+    konsole \
+    gnome-console \
+    gnome-terminal \
+    xfce4-terminal \
+    alacritty \
+    kitty \
+    tilix \
+    kate \
+    gedit \
+    terminator \
+    remmina
+
 RUN echo "**** XPipe **** ($TARGETPLATFORM)" && \
   if [ "$TARGETPLATFORM" = "linux/amd64" ]; then XPIPE_ARTIFACT="xpipe-installer-linux-x86_64.deb"; else XPIPE_ARTIFACT="xpipe-installer-linux-arm64.deb"; fi && \
   wget "https://github.com/$XPIPE_REPOSITORY/releases/download/$XPIPE_VERSION/${XPIPE_ARTIFACT}" && \
@@ -82,7 +89,9 @@ RUN echo "**** XPipe **** ($TARGETPLATFORM)" && \
 
 RUN mkdir -p "/etc/xdg/autostart/" && ln -s "/usr/share/applications/$XPIPE_PACKAGE.desktop" "/etc/xdg/autostart/$XPIPE_PACKAGE.desktop"
 
+RUN echo "**** konsole tweaks ****" && mkdir -p /config/.config && printf "\n\n[KonsoleWindow]\nUseSingleInstance=true\n\n[Notification Messages]\nCloseAllTabs=true\n" > /config/.config/konsolerc
+
 RUN echo "**** kde tweaks ****" && \
   sed -i \
-    "s/applications:org.kde.discover.desktop,/applications:org.kde.konsole.desktop,/g;s#preferred://browser#preferred://browser,applications:$XPIPE_PACKAGE.desktop#g" \
+    "s/applications:org.kde.discover.desktop,/applications:org.kde.konsole.desktop,/g;s#preferred://browser#applications:firefox.desktop,applications:code.desktop,applications:remmina-gnome.desktop,applications:$XPIPE_PACKAGE.desktop#g" \
     /usr/share/plasma/plasmoids/org.kde.plasma.taskmanager/contents/config/main.xml

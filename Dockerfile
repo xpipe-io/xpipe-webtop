@@ -43,14 +43,6 @@ RUN  echo "**** install base packages ****" && \
    /var/tmp/* \
    /tmp/*
 
-RUN echo "**** VsCode **** ($TARGETPLATFORM)" && \
-  if [ "$TARGETPLATFORM" = "linux/amd64" ]; then VSCODE_LINK="https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-x64"; else VSCODE_LINK="https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-arm64"; fi && \
-  wget -O vscode.deb "${VSCODE_LINK}" && \
-  DEBIAN_FRONTEND=noninteractive \
-  apt-get update && \
-  apt-get install --no-install-recommends -y "./vscode.deb" && \
-  rm "./vscode.deb"
-
 # add local files
 COPY /root /
 
@@ -63,7 +55,15 @@ RUN \
   echo "**** add icon ****" && \
   curl -L -o \
     /kclient/public/icon.png \
-    https://rawcdn.githack.com/xpipe-io/xpipe/a097ae7a41131fa358b5343345557ad00a45c309/dist/logo/logo.png
+    https://rawcdn.githack.com/xpipe-io/xpipe/a097ae7a41131fa358b5343345557ad00a45c309/dist/logo/logo.png \
+
+RUN echo "**** VsCode **** ($TARGETPLATFORM)" && \
+  if [ "$TARGETPLATFORM" = "linux/amd64" ]; then VSCODE_LINK="https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-x64"; else VSCODE_LINK="https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-arm64"; fi && \
+  wget -O vscode.deb "${VSCODE_LINK}" && \
+  DEBIAN_FRONTEND=noninteractive \
+  apt-get update && \
+  apt-get install --no-install-recommends -y "./vscode.deb" && \
+  rm "./vscode.deb"
 
 RUN  echo "**** install tool packages ****" && \
   DEBIAN_FRONTEND=noninteractive \

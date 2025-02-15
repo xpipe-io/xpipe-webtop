@@ -56,6 +56,7 @@ COPY /root /
 
 # ports and volumes
 EXPOSE 3000
+EXPOSE 3001
 VOLUME /config
 
 RUN \
@@ -93,5 +94,8 @@ RUN echo "**** konsole tweaks ****" && mkdir -p /config/.config && printf "\n\n[
 
 RUN echo "**** kde tweaks ****" && \
   sed -i \
-    "s/applications:org.kde.discover.desktop,/applications:org.kde.konsole.desktop,/g;s#preferred://browser#applications:firefox.desktop,applications:code.desktop,applications:remmina-gnome.desktop,applications:$XPIPE_PACKAGE.desktop#g" \
+    "s/applications:org.kde.discover.desktop,/,/g" \
+    /usr/share/plasma/plasmoids/org.kde.plasma.taskmanager/contents/config/main.xml && \
+    sed -i \
+    "s#preferred://browser#applications:firefox.desktop,applications:org.kde.konsole.desktop,applications:code.desktop,applications:org.remmina.Remmina.desktop,applications:$XPIPE_PACKAGE.desktop#g" \
     /usr/share/plasma/plasmoids/org.kde.plasma.taskmanager/contents/config/main.xml

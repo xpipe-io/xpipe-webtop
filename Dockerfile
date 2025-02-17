@@ -55,7 +55,7 @@ RUN \
   echo "**** add icon ****" && \
   curl -L -o \
     /kclient/public/icon.png \
-    https://rawcdn.githack.com/xpipe-io/xpipe/a097ae7a41131fa358b5343345557ad00a45c309/dist/logo/logo.png \
+    "https://rawcdn.githack.com/xpipe-io/xpipe/a097ae7a41131fa358b5343345557ad00a45c309/dist/logo/logo.png"
 
 RUN echo "**** VsCode **** ($TARGETPLATFORM)" && \
   if [ "$TARGETPLATFORM" = "linux/amd64" ]; then VSCODE_LINK="https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-x64"; else VSCODE_LINK="https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-arm64"; fi && \
@@ -78,7 +78,8 @@ RUN  echo "**** install tool packages ****" && \
     kate \
     gedit \
     terminator \
-    remmina
+    remmina-plugin-rdp && \
+ apt-get autoclean
 
 RUN echo "**** XPipe **** ($TARGETPLATFORM)" && \
   if [ "$TARGETPLATFORM" = "linux/amd64" ]; then XPIPE_ARTIFACT="xpipe-installer-linux-x86_64.deb"; else XPIPE_ARTIFACT="xpipe-installer-linux-arm64.deb"; fi && \
@@ -91,6 +92,8 @@ RUN echo "**** XPipe **** ($TARGETPLATFORM)" && \
 RUN mkdir -p "/etc/xdg/autostart/" && ln -s "/usr/share/applications/$XPIPE_PACKAGE.desktop" "/etc/xdg/autostart/$XPIPE_PACKAGE.desktop"
 
 RUN echo "**** konsole tweaks ****" && mkdir -p /config/.config && printf "\n\n[KonsoleWindow]\nUseSingleInstance=true\n\n[Notification Messages]\nCloseAllTabs=true\n" > /config/.config/konsolerc
+
+RUN echo "**** kwallet tweaks ****" && mkdir -p /config/.config && printf "[Wallet]\nEnabled=false\n" > /config/.config/kwalletrc
 
 RUN echo "**** kde tweaks ****" && \
   sed -i \

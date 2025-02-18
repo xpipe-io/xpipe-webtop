@@ -78,8 +78,27 @@ RUN  echo "**** install tool packages ****" && \
     kate \
     gedit \
     terminator \
+    freerdp2-x11 \
+    remmina \
     remmina-plugin-rdp && \
  apt-get autoclean
+
+RUN echo "**** tailscale ****" && curl -fsSL https://pkgs.tailscale.com/stable/ubuntu/noble.noarmor.gpg | sudo tee /usr/share/keyrings/tailscale-archive-keyring.gpg >/dev/null && \
+    curl -fsSL https://pkgs.tailscale.com/stable/ubuntu/noble.tailscale-keyring.list | sudo tee /etc/apt/sources.list.d/tailscale.list && \
+    sudo apt-get update && \
+    DEBIAN_FRONTEND=noninteractive sudo apt-get install -y tailscale
+
+RUN echo "**** teleport ****" && sudo curl https://apt.releases.teleport.dev/gpg -o /etc/apt/keyrings/teleport-archive-keyring.asc && \
+    . /etc/os-release && \
+    echo "deb [signed-by=/etc/apt/keyrings/teleport-archive-keyring.asc] https://apt.releases.teleport.dev/${ID?} ${VERSION_CODENAME?} stable/v17" | sudo tee /etc/apt/sources.list.d/teleport.list > /dev/null && \
+    sudo apt-get update && \
+    DEBIAN_FRONTEND=noninteractive sudo apt-get -y install teleport
+
+RUN echo "**** kubectl **** ($TARGETPLATFORM)" && \
+  if [ "$TARGETPLATFORM" = "linux/amd64" ]; then KUBECTL_LINK="https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"; else KUBECTL_LINK="https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/arm64/kubectl"; fi && \
+  curl -LO "${KUBECTL_LINK}" && \
+  sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl && \
+  rm kubectl
 
 RUN echo "**** XPipe **** ($TARGETPLATFORM)" && \
   if [ "$TARGETPLATFORM" = "linux/amd64" ]; then XPIPE_ARTIFACT="xpipe-installer-linux-x86_64.deb"; else XPIPE_ARTIFACT="xpipe-installer-linux-arm64.deb"; fi && \
@@ -91,9 +110,9 @@ RUN echo "**** XPipe **** ($TARGETPLATFORM)" && \
 
 RUN mkdir -p "/etc/xdg/autostart/" && ln -s "/usr/share/applications/$XPIPE_PACKAGE.desktop" "/etc/xdg/autostart/$XPIPE_PACKAGE.desktop"
 
-RUN echo "**** konsole tweaks ****" && mkdir -p /config/.config && printf "\n\n[KonsoleWindow]\nUseSingleInstance=true\n\n[Notification Messages]\nCloseAllTabs=true\n" > /config/.config/konsolerc
-
 RUN echo "**** kwallet tweaks ****" && mkdir -p /config/.config && printf "[Wallet]\nEnabled=false\n" > /config/.config/kwalletrc
+
+RUN echo "**** konsole tweaks ****" && mkdir -p /config/.config && printf "\n\n[KonsoleWindow]\nUseSingleInstance=true\n\n[Notification Messages]\nCloseAllTabs=true\n" >> /config/.config/konsolerc
 
 RUN echo "**** kde tweaks ****" && \
   sed -i \

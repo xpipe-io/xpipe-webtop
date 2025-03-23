@@ -121,3 +121,5 @@ RUN echo "**** kde tweaks ****" && \
     sed -i \
     "s#preferred://browser#applications:firefox.desktop,applications:org.kde.konsole.desktop,applications:code.desktop,applications:org.remmina.Remmina.desktop,applications:$XPIPE_PACKAGE.desktop#g" \
     /usr/share/plasma/plasmoids/org.kde.plasma.taskmanager/contents/config/main.xml
+
+RUN echo "**** dolphin tweaks ****" && printf "x-scheme-handler/file=org.kde.dolphin.desktop\n" >> /usr/share/applications/kde-mimeapps.list

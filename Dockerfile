@@ -27,6 +27,8 @@ RUN  echo "**** install base packages ****" && \
     kwrite \
     wget \
     git \
+    zip \
+    unzip \
     plasma-desktop \
     plasma-workspace \
     plymouth-theme-kubuntu-logo \
@@ -42,6 +44,13 @@ RUN  echo "**** install base packages ****" && \
    /var/lib/apt/lists/* \
    /var/tmp/* \
    /tmp/*
+
+RUN echo "**** nerdfonts ****" && \
+  curl -LO "https://github.com/ryanoasis/nerd-fonts/releases/latest/download/UbuntuMono.zip" && \
+  mkdir -p "/usr/share/fonts/ubuntu-mono-nerd" && \
+  unzip "UbuntuMono.zip" -d "/usr/share/fonts/ubuntu-mono-nerd" && \
+  rm "UbuntuMono.zip" && \
+  fc-cache -fv
 
 # add local files
 COPY /root /
@@ -80,6 +89,8 @@ RUN  echo "**** install tool packages ****" && \
     terminator \
     freerdp2-x11 \
     remmina \
+    tmux \
+    screen \
     remmina-plugin-rdp && \
  apt-get autoclean
 
@@ -108,11 +119,15 @@ RUN echo "**** XPipe **** ($TARGETPLATFORM)" && \
   apt-get install --no-install-recommends -y "./${XPIPE_ARTIFACT}" && \
   rm "./${XPIPE_ARTIFACT}"
 
+RUN echo "**** zellij **** ($TARGETPLATFORM)" && \
+  if [ "$TARGETPLATFORM" = "linux/amd64" ]; then ZELLIJ_LINK="https://github.com/zellij-org/zellij/releases/latest/download/zellij-x86_64-unknown-linux-musl.tar.gz"; else ZELLIJ_LINK="https://github.com/zellij-org/zellij/releases/latest/download/zellij-aarch64-unknown-linux-musl.tar.gz "; fi && \
+  curl -LO "${ZELLIJ_LINK}" && \
+  tar -xvf zellij*.tar.gz && \
+  sudo install -o root -g root -m 0755 zellij /usr/local/bin/zellij && \
+  rm zellij && \
+  rm zellij*.tar.gz
+
 RUN mkdir -p "/etc/xdg/autostart/" && ln -s "/usr/share/applications/$XPIPE_PACKAGE.desktop" "/etc/xdg/autostart/$XPIPE_PACKAGE.desktop"
-
-RUN echo "**** kwallet tweaks ****" && mkdir -p /config/.config && printf "[Wallet]\nEnabled=false\n" > /config/.config/kwalletrc
-
-RUN echo "**** konsole tweaks ****" && mkdir -p /config/.config && printf "\n\n[KonsoleWindow]\nUseSingleInstance=true\n\n[Notification Messages]\nCloseAllTabs=true\n" >> /config/.config/konsolerc
 
 RUN echo "**** kde tweaks ****" && \
   sed -i \

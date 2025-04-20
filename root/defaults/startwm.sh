@@ -17,5 +17,13 @@ fi
 setterm blank 0
 setterm powerdown 0
 
+if [ ! -f "$HOME/.config/konsolerc" ]; then
+  printf "[General]\nConfigVersion=1\n\n[KonsoleWindow]\nUseSingleInstance=true\n\n[Notification Messages]\nCloseAllTabs=true\nCloseSingleTab=true\n" > "$HOME/.config/konsolerc"
+fi
+
+if [ ! -f "$HOME/.config/kwalletrc" ]; then
+  printf "[Wallet]\nEnabled=false\n" > "$HOME/.config/kwalletrc"
+fi
+
 # Launch DE
 /usr/bin/dbus-launch /usr/bin/startplasma-x11 > /dev/null 2>&1

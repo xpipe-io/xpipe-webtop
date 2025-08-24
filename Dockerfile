@@ -29,6 +29,7 @@ RUN  echo "**** install base packages ****" && \
     git \
     zip \
     unzip \
+    kmod \
     plasma-desktop \
     plasma-workspace \
     plymouth-theme-kubuntu-logo \

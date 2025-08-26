@@ -30,6 +30,9 @@ RUN  echo "**** install base packages ****" && \
     zip \
     unzip \
     kmod \
+    nano \
+    mousepad \
+    vim \
     plasma-desktop \
     plasma-workspace \
     plymouth-theme-kubuntu-logo \

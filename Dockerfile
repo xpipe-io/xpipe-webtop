@@ -103,6 +103,14 @@ RUN echo "**** tailscale ****" && curl -fsSL https://pkgs.tailscale.com/stable/u
     sudo apt-get update && \
     DEBIAN_FRONTEND=noninteractive sudo apt-get install -y tailscale
 
+RUN echo "**** netbird ****" && \
+    sudo apt-get update && \
+    sudo apt-get install ca-certificates curl gnupg -y && \
+    curl -sSL https://pkgs.netbird.io/debian/public.key | sudo gpg --dearmor --output /usr/share/keyrings/netbird-archive-keyring.gpg && \
+    echo 'deb [signed-by=/usr/share/keyrings/netbird-archive-keyring.gpg] https://pkgs.netbird.io/debian stable main' | sudo tee /etc/apt/sources.list.d/netbird.list && \
+    sudo apt-get update && \
+    sudo apt-get install netbird
+
 RUN echo "**** teleport ****" && sudo curl https://apt.releases.teleport.dev/gpg -o /etc/apt/keyrings/teleport-archive-keyring.asc && \
     . /etc/os-release && \
     echo "deb [signed-by=/etc/apt/keyrings/teleport-archive-keyring.asc] https://apt.releases.teleport.dev/${ID?} ${VERSION_CODENAME?} stable/v17" | sudo tee /etc/apt/sources.list.d/teleport.list > /dev/null && \
@@ -115,13 +123,14 @@ RUN echo "**** kubectl **** ($TARGETPLATFORM)" && \
   sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl && \
   rm kubectl
 
-RUN echo "**** XPipe **** ($TARGETPLATFORM)" && \
-  if [ "$TARGETPLATFORM" = "linux/amd64" ]; then XPIPE_ARTIFACT="xpipe-installer-linux-x86_64.deb"; else XPIPE_ARTIFACT="xpipe-installer-linux-arm64.deb"; fi && \
-  wget "https://github.com/$XPIPE_REPOSITORY/releases/download/$XPIPE_VERSION/${XPIPE_ARTIFACT}" && \
-  DEBIAN_FRONTEND=noninteractive \
-  apt-get update && \
-  apt-get install --no-install-recommends -y "./${XPIPE_ARTIFACT}" && \
-  rm "./${XPIPE_ARTIFACT}"
+RUN echo "**** aws ****" && curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "/tmp/awscliv2.zip" && \
+  unzip "/tmp/awscliv2.zip" -d "/tmp" && \
+  sudo "/tmp/aws/install" && \
+  rm -rf "/tmp/aws" "/tmp/awscliv2.zip"
+
+RUN echo "**** aws ssm ****" && curl "https://s3.amazonaws.com/session-manager-downloads/plugin/latest/ubuntu_64bit/session-manager-plugin.deb" -o "/tmp/session-manager-plugin.deb" && \
+  sudo dpkg -i "/tmp/session-manager-plugin.deb" && \
+  rm -rf "/tmp/aws" "/tmp/session-manager-plugin.deb"
 
 RUN echo "**** zellij **** ($TARGETPLATFORM)" && \
   if [ "$TARGETPLATFORM" = "linux/amd64" ]; then ZELLIJ_LINK="https://github.com/zellij-org/zellij/releases/latest/download/zellij-x86_64-unknown-linux-musl.tar.gz"; else ZELLIJ_LINK="https://github.com/zellij-org/zellij/releases/latest/download/zellij-aarch64-unknown-linux-musl.tar.gz"; fi && \
@@ -130,6 +139,16 @@ RUN echo "**** zellij **** ($TARGETPLATFORM)" && \
   sudo install -o root -g root -m 0755 zellij /usr/local/bin/zellij && \
   rm zellij && \
   rm zellij*.tar.gz
+
+RUN echo "**** dolphin tweaks ****" && printf "x-scheme-handler/file=org.kde.dolphin.desktop\n" >> /usr/share/applications/kde-mimeapps.list
+
+RUN echo "**** XPipe **** ($TARGETPLATFORM)" && \
+  if [ "$TARGETPLATFORM" = "linux/amd64" ]; then XPIPE_ARTIFACT="xpipe-installer-linux-x86_64.deb"; else XPIPE_ARTIFACT="xpipe-installer-linux-arm64.deb"; fi && \
+  wget "https://github.com/$XPIPE_REPOSITORY/releases/download/$XPIPE_VERSION/${XPIPE_ARTIFACT}" && \
+  DEBIAN_FRONTEND=noninteractive \
+  apt-get update && \
+  apt-get install --no-install-recommends -y "./${XPIPE_ARTIFACT}" && \
+  rm "./${XPIPE_ARTIFACT}"
 
 RUN mkdir -p "/etc/xdg/autostart/" && ln -s "/usr/share/applications/$XPIPE_PACKAGE.desktop" "/etc/xdg/autostart/$XPIPE_PACKAGE.desktop"
 
@@ -141,4 +160,3 @@ RUN echo "**** kde tweaks ****" && \
     "s#preferred://browser#applications:firefox.desktop,applications:org.kde.konsole.desktop,applications:code.desktop,applications:org.remmina.Remmina.desktop,applications:$XPIPE_PACKAGE.desktop#g" \
     /usr/share/plasma/plasmoids/org.kde.plasma.taskmanager/contents/config/main.xml
 
-RUN echo "**** dolphin tweaks ****" && printf "x-scheme-handler/file=org.kde.dolphin.desktop\n" >> /usr/share/applications/kde-mimeapps.list

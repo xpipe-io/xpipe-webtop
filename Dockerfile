@@ -155,10 +155,9 @@ RUN echo "**** XPipe **** ($TARGETPLATFORM)" && \
 RUN mkdir -p "/etc/xdg/autostart/" && ln -s "/usr/share/applications/$XPIPE_PACKAGE.desktop" "/etc/xdg/autostart/$XPIPE_PACKAGE.desktop"
 
 RUN echo "**** kde tweaks ****" && \
-  sed -i \
+    sed -i \
     "s/applications:org.kde.discover.desktop,/,/g" \
     /usr/share/plasma/plasmoids/org.kde.plasma.taskmanager/contents/config/main.xml && \
     sed -i \
     "s#preferred://browser#applications:firefox.desktop,applications:org.kde.konsole.desktop,applications:code.desktop,applications:org.remmina.Remmina.desktop,applications:$XPIPE_PACKAGE.desktop#g" \
     /usr/share/plasma/plasmoids/org.kde.plasma.taskmanager/contents/config/main.xml
-

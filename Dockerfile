@@ -8,6 +8,12 @@ ARG XPIPE_REPOSITORY
 ARG XPIPE_PACKAGE
 ARG TARGETPLATFORM
 
+RUN : \
+  && test -n "$XPIPE_VERSION" || (echo "\033[31mERROR [build] RUN: There was an error: the build argument XPIPE_VERSION must be set!\033[0m" && exit 1) \
+  && test -n "$XPIPE_REPOSITORY" || (echo "\033[31mERROR [build] RUN: There was an error: the build argument XPIPE_REPOSITORY must be set! (recommended is xpipe-io/xpipe)\033[0m" && exit 1) \
+  && test -n "$XPIPE_PACKAGE" || (echo "\033[31mERROR [build] RUN: There was an error: the build argument XPIPE_PACKAGE must be set! (recommended is xpipe)\033[0m" && exit 1)
+
+
 # prevent Ubuntu's firefox stub from being installed
 COPY /root/etc/apt/preferences.d/firefox-no-snap /etc/apt/preferences.d/firefox-no-snap
 

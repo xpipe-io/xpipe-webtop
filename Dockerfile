@@ -3,12 +3,14 @@ FROM ghcr.io/linuxserver/baseimage-kasmvnc:ubuntunoble AS build
 ARG DEBIAN_FRONTEND="noninteractive"
 
 ENV TITLE="XPipe Webtop"
+# not shure if the DISABLE_SANDBOX is helping
+ENV DISABLE_SANDBOX=1
 ARG XPIPE_VERSION
 ARG XPIPE_REPOSITORY
 ARG XPIPE_PACKAGE
 ARG TARGETPLATFORM
 
-RUN : \
+RUN echo "**** check build args ****" \
   && test -n "$XPIPE_VERSION" || (echo "\033[31mERROR [build] RUN: There was an error: the build argument XPIPE_VERSION must be set!\033[0m" && exit 1) \
   && test -n "$XPIPE_REPOSITORY" || (echo "\033[31mERROR [build] RUN: There was an error: the build argument XPIPE_REPOSITORY must be set! (recommended is xpipe-io/xpipe)\033[0m" && exit 1) \
   && test -n "$XPIPE_PACKAGE" || (echo "\033[31mERROR [build] RUN: There was an error: the build argument XPIPE_PACKAGE must be set! (recommended is xpipe)\033[0m" && exit 1)
@@ -75,14 +77,6 @@ RUN \
   curl -L -o \
     /kclient/public/icon.png \
     "https://rawcdn.githack.com/xpipe-io/xpipe/a097ae7a41131fa358b5343345557ad00a45c309/dist/logo/logo.png"
-
-RUN echo "**** VsCode **** ($TARGETPLATFORM)" && \
-  if [ "$TARGETPLATFORM" = "linux/amd64" ]; then VSCODE_LINK="https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-x64"; else VSCODE_LINK="https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-arm64"; fi && \
-  wget -O vscode.deb "${VSCODE_LINK}" && \
-  DEBIAN_FRONTEND=noninteractive \
-  apt-get update && \
-  apt-get install --no-install-recommends -y "./vscode.deb" && \
-  rm "./vscode.deb"
 
 RUN  echo "**** install tool packages ****" && \
   DEBIAN_FRONTEND=noninteractive \
@@ -159,6 +153,21 @@ RUN echo "**** XPipe **** ($TARGETPLATFORM)" && \
   rm "./${XPIPE_ARTIFACT}"
 
 RUN mkdir -p "/etc/xdg/autostart/" && ln -s "/usr/share/applications/$XPIPE_PACKAGE.desktop" "/etc/xdg/autostart/$XPIPE_PACKAGE.desktop"
+
+RUN echo "**** VsCode **** ($TARGETPLATFORM)" && \
+  if [ "$TARGETPLATFORM" = "linux/amd64" ]; then VSCODE_LINK="https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-x64"; else VSCODE_LINK="https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-arm64"; fi && \
+  wget -O vscode.deb "${VSCODE_LINK}" && \
+  DEBIAN_FRONTEND=noninteractive \
+  apt-get update && \
+  apt-get install --no-install-recommends -y "./vscode.deb" && \
+  rm "./vscode.deb"
+
+# fix vscode
+RUN mv /usr/share/code/code /usr/share/code/code-sandbox
+
+RUN echo '#!/bin/bash\n/usr/share/code/code-sandbox --no-sandbox "$@"' > /usr/share/code/code && \
+    chmod +x /usr/share/code/code && \
+    sudo ln -sf /usr/share/code/code /usr/bin/code
 
 RUN echo "**** kde tweaks ****" && \
     sed -i \

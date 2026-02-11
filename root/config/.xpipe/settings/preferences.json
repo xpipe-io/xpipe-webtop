@@ -41,7 +41,7 @@
   "storageGitRemote" : "",
   "syncMode" : "instant",
   "closeBehaviour" : "app.quit",
-  "externalEditor" : "app.vscode",
+  "externalEditor" : "app.kate",
   "customEditorCommand" : "",
   "customEditorCommandInTerminal" : false,
   "automaticallyCheckForUpdates" : true,

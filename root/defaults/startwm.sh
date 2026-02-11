@@ -18,6 +18,11 @@ if [ ! -f "$HOME/.config/kwalletrc" ]; then
   printf "[Wallet]\nEnabled=false\n" > "$HOME/.config/kwalletrc"
 fi
 
+if [ ! -f "$HOME/.xpipe" ]; then
+  sudo chown -R abc:abc $HOME/.xpipe
+fi
+
+
 # Directories
 sudo rm -f /usr/share/dbus-1/system-services/org.freedesktop.UDisks2.service
 mkdir -p "${HOME}/.config/autostart" "${HOME}/.XDG" "${HOME}/.local/share/"

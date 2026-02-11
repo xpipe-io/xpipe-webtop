@@ -1,0 +1,17 @@
+{
+    "KPlugin": {
+        "Authors": [
+            {
+                "Email": "hello@xpipe.io",
+                "Name": "X-pipe io"
+            }
+        ],
+        "Id": "Webtop",
+        "License": "CC-BY-SA-4.0",
+        "Name": "Webtop"
+    },
+    "X-KDE-PlasmaImageWallpaper-AccentColor": {
+        "Dark": "#107a70",
+        "Light": "#107a70"
+    }
+}

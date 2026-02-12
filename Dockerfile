@@ -156,8 +156,6 @@ RUN echo "**** zellij **** ($TARGETPLATFORM)" && \
   rm zellij && \
   rm zellij*.tar.gz
 
-RUN echo "**** dolphin tweaks ****" && printf "x-scheme-handler/file=org.kde.dolphin.desktop\n" >> /usr/share/applications/kde-mimeapps.list
-
 RUN echo "**** XPipe **** ($TARGETPLATFORM)" && \
   if [ "$TARGETPLATFORM" = "linux/amd64" ]; then XPIPE_ARTIFACT="xpipe-installer-linux-x86_64.deb"; else XPIPE_ARTIFACT="xpipe-installer-linux-arm64.deb"; fi && \
   wget "https://github.com/$XPIPE_REPOSITORY/releases/download/$XPIPE_VERSION/${XPIPE_ARTIFACT}" && \

@@ -17,10 +17,10 @@ Image=Webtop
 cursorTheme=breeze_cursors
 
 [kwinrc][WindowSwitcher]
-LayoutName=org.kde.breeze.desktop
+LayoutName=io.xpipe.desktop
 
 [kwinrc][DesktopSwitcher]
-LayoutName=org.kde.breeze.desktop
+LayoutName=io.xpipe.desktop
 
 [kwinrc][org.kde.kdecoration2]
 library=org.kde.breeze

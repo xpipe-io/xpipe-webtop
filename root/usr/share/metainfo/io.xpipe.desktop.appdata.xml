@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component>
+    <id>io.xpipe.desktop</id>
+    <name>XPipe Webtop</name>
+    <name xml:lang="en_GB">XPipe Webtop</name>
+    <url type="homepage">https://xpipe.io</url>
+</component>

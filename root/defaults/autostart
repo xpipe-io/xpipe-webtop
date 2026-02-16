@@ -1,1 +1,5 @@
+plasma-apply-colorscheme BreezeDark
+plasma-apply-desktoptheme breezedark
+plasma-apply-lookandfeel -a io.xpipe.desktop
+plasma-apply-wallpaperimage /usr/share/wallpapers/Webtop/contents/images/3000x2000.png
 exit 0

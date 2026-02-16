@@ -13,7 +13,6 @@ RUN echo "**** check build args ****" \
   && test -n "$XPIPE_REPOSITORY" || (echo "\033[31mERROR [build] RUN: There was an error: the build argument XPIPE_REPOSITORY must be set! (recommended is xpipe-io/xpipe)\033[0m" && exit 1) \
   && test -n "$XPIPE_PACKAGE" || (echo "\033[31mERROR [build] RUN: There was an error: the build argument XPIPE_PACKAGE must be set! (recommended is xpipe)\033[0m" && exit 1)
 
-
 # prevent Ubuntu's firefox stub from being installed
 COPY /root/etc/apt/preferences.d/firefox-no-snap /etc/apt/preferences.d/firefox-no-snap
 
@@ -39,6 +38,7 @@ RUN  echo "**** install base packages ****" && \
     nano \
     mousepad \
     vim \
+    neovim \
     plasma-desktop \
     plasma-workspace \
     plymouth-theme-kubuntu-logo \
@@ -85,10 +85,9 @@ RUN echo "**** VsCode **** ($TARGETPLATFORM)" && \
   apt-get install --no-install-recommends -y "./vscode.deb" && \
   rm "./vscode.deb"
 
-# fix vscode
-RUN mv /usr/share/code/code /usr/share/code/code-sandbox
-
-RUN echo '#!/bin/bash\n/usr/share/code/code-sandbox --no-sandbox "$@"' > /usr/share/code/code && \
+RUN echo "**** Fix VsCode ****" && \
+    mv /usr/share/code/code /usr/share/code/code-sandbox && \
+    echo '#!/bin/bash\n/usr/share/code/code-sandbox --no-sandbox "$@"' > /usr/share/code/code && \
     chmod +x /usr/share/code/code && \
     sudo ln -sf /usr/share/code/code /usr/bin/code
 

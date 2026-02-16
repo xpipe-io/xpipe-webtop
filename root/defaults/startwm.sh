@@ -18,11 +18,6 @@ if [ ! -f "$HOME/.config/kwalletrc" ]; then
   printf "[Wallet]\nEnabled=false\n" > "$HOME/.config/kwalletrc"
 fi
 
-if [ ! -f "$HOME/.xpipe" ]; then
-  sudo chown -R abc:abc $HOME/.xpipe
-fi
-
-
 # Directories
 sudo rm -f /usr/share/dbus-1/system-services/org.freedesktop.UDisks2.service
 mkdir -p "${HOME}/.config/autostart" "${HOME}/.XDG" "${HOME}/.local/share/"
@@ -44,7 +39,7 @@ fi
 STARTUP_FILE="${HOME}/.config/autostart/autostart.desktop"
 if [ ! -f "${STARTUP_FILE}" ]; then
   echo "[Desktop Entry]" > $STARTUP_FILE
-  echo "Exec=bash /config/.config/openbox/autostart" >> $STARTUP_FILE
+  echo "Exec=bash /defaults/autostart" >> $STARTUP_FILE
   echo "Icon=dialog-scripts" >> $STARTUP_FILE
   echo "Name=autostart" >> $STARTUP_FILE
   echo "Path=" >> $STARTUP_FILE

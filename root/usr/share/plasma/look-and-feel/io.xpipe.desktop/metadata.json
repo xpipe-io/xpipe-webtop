@@ -3,14 +3,14 @@
         "Authors": [
             {
                 "Email": "hello@xpipe.io ",
-                "Name": "X-pipe io"
+                "Name": "XPipe"
             }
         ],
         "Category": "",
-        "Description": "Webtop Dark by the X-Pipe forked from Breeze dark",
-        "Id": "org.kde.breezedark.desktop",
+        "Description": "Custom theme for the webtop environment",
+        "Id": "io.xpipe.desktop",
         "License": "GPLv2+",
-        "Name": "Webtop Dark",
+        "Name": "Webtop",
         "ServiceTypes": [
             "Plasma/LookAndFeel"
         ],

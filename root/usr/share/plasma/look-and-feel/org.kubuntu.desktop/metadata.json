@@ -1,0 +1,21 @@
+{
+    "KPlugin": {
+        "Authors": [
+            {
+                "Email": "hello@xpipe.io ",
+                "Name": "X-pipe io"
+            }
+        ],
+        "Category": "",
+        "Description": "Webtop Dark by the X-Pipe forked from Breeze dark",
+        "Id": "org.kde.breezedark.desktop",
+        "License": "GPLv2+",
+        "Name": "Webtop Dark",
+        "ServiceTypes": [
+            "Plasma/LookAndFeel"
+        ],
+        "Version": "2.0",
+        "Website": "https://xpipe.io"
+    },
+    "X-Plasma-MainScript": "defaults"
+}

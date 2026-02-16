@@ -8,6 +8,12 @@ ARG XPIPE_REPOSITORY
 ARG XPIPE_PACKAGE
 ARG TARGETPLATFORM
 
+RUN echo "**** check build args ****" \
+  && test -n "$XPIPE_VERSION" || (echo "\033[31mERROR [build] RUN: There was an error: the build argument XPIPE_VERSION must be set!\033[0m" && exit 1) \
+  && test -n "$XPIPE_REPOSITORY" || (echo "\033[31mERROR [build] RUN: There was an error: the build argument XPIPE_REPOSITORY must be set! (recommended is xpipe-io/xpipe)\033[0m" && exit 1) \
+  && test -n "$XPIPE_PACKAGE" || (echo "\033[31mERROR [build] RUN: There was an error: the build argument XPIPE_PACKAGE must be set! (recommended is xpipe)\033[0m" && exit 1)
+
+
 # prevent Ubuntu's firefox stub from being installed
 COPY /root/etc/apt/preferences.d/firefox-no-snap /etc/apt/preferences.d/firefox-no-snap
 
@@ -70,6 +76,7 @@ RUN \
     /kclient/public/icon.png \
     "https://rawcdn.githack.com/xpipe-io/xpipe/a097ae7a41131fa358b5343345557ad00a45c309/dist/logo/logo.png"
 
+
 RUN echo "**** VsCode **** ($TARGETPLATFORM)" && \
   if [ "$TARGETPLATFORM" = "linux/amd64" ]; then VSCODE_LINK="https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-x64"; else VSCODE_LINK="https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-arm64"; fi && \
   wget -O vscode.deb "${VSCODE_LINK}" && \
@@ -77,6 +84,13 @@ RUN echo "**** VsCode **** ($TARGETPLATFORM)" && \
   apt-get update && \
   apt-get install --no-install-recommends -y "./vscode.deb" && \
   rm "./vscode.deb"
+
+# fix vscode
+RUN mv /usr/share/code/code /usr/share/code/code-sandbox
+
+RUN echo '#!/bin/bash\n/usr/share/code/code-sandbox --no-sandbox "$@"' > /usr/share/code/code && \
+    chmod +x /usr/share/code/code && \
+    sudo ln -sf /usr/share/code/code /usr/bin/code
 
 RUN  echo "**** install tool packages ****" && \
   DEBIAN_FRONTEND=noninteractive \
@@ -142,8 +156,6 @@ RUN echo "**** zellij **** ($TARGETPLATFORM)" && \
   rm zellij && \
   rm zellij*.tar.gz
 
-RUN echo "**** dolphin tweaks ****" && printf "x-scheme-handler/file=org.kde.dolphin.desktop\n" >> /usr/share/applications/kde-mimeapps.list
-
 RUN echo "**** XPipe **** ($TARGETPLATFORM)" && \
   if [ "$TARGETPLATFORM" = "linux/amd64" ]; then XPIPE_ARTIFACT="xpipe-installer-linux-x86_64.deb"; else XPIPE_ARTIFACT="xpipe-installer-linux-arm64.deb"; fi && \
   wget "https://github.com/$XPIPE_REPOSITORY/releases/download/$XPIPE_VERSION/${XPIPE_ARTIFACT}" && \
@@ -155,10 +167,9 @@ RUN echo "**** XPipe **** ($TARGETPLATFORM)" && \
 RUN mkdir -p "/etc/xdg/autostart/" && ln -s "/usr/share/applications/$XPIPE_PACKAGE.desktop" "/etc/xdg/autostart/$XPIPE_PACKAGE.desktop"
 
 RUN echo "**** kde tweaks ****" && \
-  sed -i \
+    sed -i \
     "s/applications:org.kde.discover.desktop,/,/g" \
     /usr/share/plasma/plasmoids/org.kde.plasma.taskmanager/contents/config/main.xml && \
     sed -i \
     "s#preferred://browser#applications:firefox.desktop,applications:org.kde.konsole.desktop,applications:code.desktop,applications:org.remmina.Remmina.desktop,applications:$XPIPE_PACKAGE.desktop#g" \
     /usr/share/plasma/plasmoids/org.kde.plasma.taskmanager/contents/config/main.xml
-

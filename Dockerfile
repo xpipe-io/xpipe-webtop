@@ -1,12 +1,13 @@
-FROM ghcr.io/linuxserver/baseimage-kasmvnc:ubuntunoble AS build
-
-ARG DEBIAN_FRONTEND="noninteractive"
+FROM ghcr.io/linuxserver/baseimage-selkies:ubunturesolute
 
 ENV TITLE="XPipe Webtop"
+ENV PIXELFLUX_WAYLAND=true
+
 ARG XPIPE_VERSION
 ARG XPIPE_REPOSITORY
 ARG XPIPE_PACKAGE
 ARG TARGETPLATFORM
+ARG DEBIAN_FRONTEND="noninteractive"
 
 RUN echo "**** check build args ****" \
   && test -n "$XPIPE_VERSION" || (echo "\033[31mERROR [build] RUN: There was an error: the build argument XPIPE_VERSION must be set!\033[0m" && exit 1) \
@@ -21,15 +22,22 @@ RUN  echo "**** install base packages ****" && \
   apt-get update && \
   DEBIAN_FRONTEND=noninteractive \
   apt-get install --no-install-recommends -y \
+    cargo \
     dolphin \
     firefox \
     gwenview \
     kde-config-gtk-style \
     kdialog \
+    kfind \
+    khotkeys \
+    ksystemstats \
     kio-extras \
     kubuntu-settings-desktop \
+    kubuntu-wallpapers \
+    kwin-addons \
     kwin-x11 \
     kwrite \
+    libkf6dbusaddons-bin \
     wget \
     git \
     zip \
@@ -46,6 +54,12 @@ RUN  echo "**** install base packages ****" && \
     fonts-noto \
     fonts-noto-cjk \
     systemsettings && \
+  cargo install \
+    wl-clipboard-rs-tools && \
+  echo "**** replace wl-clipboard with rust ****" && \
+  mv \
+    /config/.cargo/bin/wl-* \
+    /usr/bin/ && \
  apt-get remove -y plasma-welcome && \
  apt-get autoclean && \
  rm -rf \
@@ -73,7 +87,7 @@ VOLUME /config
 RUN \
   echo "**** add icon ****" && \
   curl -L -o \
-    /kclient/public/icon.png \
+    /usr/share/selkies/www/icon.png \
     "https://rawcdn.githack.com/xpipe-io/xpipe/a097ae7a41131fa358b5343345557ad00a45c309/dist/logo/logo.png"
 
 
@@ -97,14 +111,12 @@ RUN  echo "**** install tool packages ****" && \
     konsole \
     gnome-console \
     gnome-terminal \
-    xfce4-terminal \
     alacritty \
     kitty \
     tilix \
     kate \
     gedit \
     terminator \
-    freerdp2-x11 \
     remmina \
     tmux \
     screen \
@@ -163,12 +175,6 @@ RUN echo "**** XPipe **** ($TARGETPLATFORM)" && \
   apt-get install --no-install-recommends -y "./${XPIPE_ARTIFACT}" && \
   rm "./${XPIPE_ARTIFACT}"
 
-RUN mkdir -p "/etc/xdg/autostart/" && ln -s "/usr/share/applications/$XPIPE_PACKAGE.desktop" "/etc/xdg/autostart/$XPIPE_PACKAGE.desktop"
-
 RUN echo "**** kde tweaks ****" && \
-    sed -i \
-    "s/applications:org.kde.discover.desktop,/,/g" \
-    /usr/share/plasma/plasmoids/org.kde.plasma.taskmanager/contents/config/main.xml && \
-    sed -i \
-    "s#preferred://browser#applications:firefox.desktop,applications:org.kde.konsole.desktop,applications:code.desktop,applications:org.remmina.Remmina.desktop,applications:$XPIPE_PACKAGE.desktop#g" \
-    /usr/share/plasma/plasmoids/org.kde.plasma.taskmanager/contents/config/main.xml
+    setcap -r \
+    /usr/bin/kwin_wayland

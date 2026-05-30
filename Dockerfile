@@ -76,9 +76,6 @@ RUN echo "**** nerdfonts ****" && \
   rm "UbuntuMono.zip" && \
   fc-cache -fv
 
-# add local files
-COPY /root /
-
 # ports and volumes
 EXPOSE 3000
 EXPOSE 3001
@@ -178,3 +175,7 @@ RUN echo "**** XPipe **** ($TARGETPLATFORM)" && \
 RUN echo "**** kde tweaks ****" && \
     setcap -r \
     /usr/bin/kwin_wayland
+
+# add local files
+COPY /root /
+

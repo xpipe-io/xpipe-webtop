@@ -6,19 +6,20 @@ ENV_FILE=/apps/env
 export $(cat $ENV_FILE | xargs)
 export DEBIAN_FRONTEND="noninteractive"
 
-mkdir -p /apps/installed
-chmod 777 /apps/installed
+sudo mkdir -p /apps/installed
+sudo chmod 777 /apps/installed
 
 FORCE=0
 APPS="$@"
-for APP in "$APPS"
+for APP in $@
 do
-    if [ $APP == "--force" ]; then
+    if [[ "$APP" == "--force" ]]; then
       FORCE=1
+      continue
     fi
 
     INSTALLED_FILE="/apps/installed/$APP.sh"
-    if [ FORCE == 0 || -f $INSTALLED_FILE ]; then
+    if [[ FORCE == 0 && -f $INSTALLED_FILE ]]; then
       echo "App $APP is already installed. Skipping ..."
       continue
     fi
@@ -27,4 +28,7 @@ do
     . $SCRIPT_FILE
     ln -s $SCRIPT_FILE $INSTALLED_FILE
     echo "Installed $APP"
+    INSTALLED_DIR="$HOME/.xpipe/webtop-installed"
+    mkdir -p "$INSTALLED_DIR"
+    touch "$INSTALLED_DIR/$APP"
 done

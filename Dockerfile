@@ -118,6 +118,8 @@ RUN echo "**** kde tweaks ****" && \
     setcap -r \
     /usr/bin/kwin_wayland
 
+RUN echo "**** sudo tweaks ****" && echo 'Defaults env_keep += "DEBIAN_FRONTEND"' >> /etc/sudoers
+
 # add local files
 COPY /root /
 

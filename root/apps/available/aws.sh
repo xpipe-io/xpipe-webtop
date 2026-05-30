@@ -9,3 +9,5 @@ if [ "$TARGETPLATFORM" = "linux/amd64" ]; then SSM_LINK="https://s3.amazonaws.co
 curl "${SSM_LINK}" -o "/tmp/session-manager-plugin.deb"
 sudo dpkg -i "/tmp/session-manager-plugin.deb"
 rm -rf "/tmp/aws" "/tmp/session-manager-plugin.deb"
+
+aws --version

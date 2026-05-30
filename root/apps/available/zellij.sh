@@ -6,3 +6,4 @@ tar -xvf zellij*.tar.gz
 sudo install -o root -g root -m 0755 zellij /usr/local/bin/zellij
 rm zellij
 rm zellij*.tar.gz
+zellij --version

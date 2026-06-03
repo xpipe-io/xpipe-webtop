@@ -1,26 +1,32 @@
 #!/bin/bash
+
 ulimit -c 0
 
 # Disable compositing and screen locking
 if [ ! -f $HOME/.config/kwinrc ]; then
   kwriteconfig6 --file $HOME/.config/kwinrc --group Compositing --key Enabled false
-  # kwriteconfig6 --file $HOME/.config/kwinrc --group Windows --key FocusStealingPreventionLevel 2
 fi
 if [ ! -f $HOME/.config/kscreenlockerrc ]; then
   kwriteconfig6 --file $HOME/.config/kscreenlockerrc --group Daemon --key Autolock false
+fi
+if [ ! -f $HOME/.config/kdeglobals ]; then
+  kwriteconfig6 --file $HOME/.config/kdeglobals --group KScreen --key XwaylandClientScale false
+fi
+
+if [ ! -f "$HOME/.config/konsolerc" ]; then
+  kwriteconfig6 --file $HOME/.config/konsolerc --group General --key ConfigVersion 1
+  kwriteconfig6 --file $HOME/.config/konsolerc --group KonsoleWindow --key UseSingleInstance true
+  kwriteconfig6 --file $HOME/.config/konsolerc --group "Notification Messages" --key CloseAllTabs true
+  kwriteconfig6 --file $HOME/.config/konsolerc --group "Notification Messages" --key CloseSingleTab true
+fi
+
+if [ ! -f "$HOME/.config/kwalletrc" ]; then
+  kwriteconfig6 --file $HOME/.config/kwalletrc --group Wallet --key Enabled false
 fi
 
 # Power related
 setterm blank 0
 setterm powerdown 0
-
-if [ ! -f "$HOME/.config/konsolerc" ]; then
-  printf "[General]\nConfigVersion=1\n\n[KonsoleWindow]\nUseSingleInstance=true\n\n[Notification Messages]\nCloseAllTabs=true\nCloseSingleTab=true\n" > "$HOME/.config/konsolerc"
-fi
-
-if [ ! -f "$HOME/.config/kwalletrc" ]; then
-  printf "[Wallet]\nEnabled=false\n" > "$HOME/.config/kwalletrc"
-fi
 
 # Setup permissive clipboard rules
 KWIN_RULES_FILE="$HOME/.config/kwinrulesrc"

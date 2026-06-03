@@ -1,0 +1,29 @@
+#!/bin/sh
+
+### BEGIN INIT INFO
+# Provides:	  packagekitd
+# Required-Start:    $local_fs $remote_fs $network $syslog $named
+# Required-Stop:     $local_fs $remote_fs $network $syslog $named
+# Should-Start:      polkitd
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: starts the packagekit daemon
+# Description:       starts the packagekit daemon
+### END INIT INFO
+
+PID=/run/packagekitd.pid
+DAEMON=/usr/libexec/packagekitd
+NAME=packagekitd
+
+set -e
+
+. /lib/lsb/init-functions
+
+case "$1" in
+	start|reload|restart|force-reload)
+		start-stop-daemon --start --quiet --pidfile $PID --exec $DAEMON > /dev/null
+	;;
+	stop|status)
+	  start-stop-daemon --stop --quiet --pidfile $PID --name $NAME
+	;;
+esac

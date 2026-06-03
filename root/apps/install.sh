@@ -2,10 +2,6 @@
 
 set -e
 
-ENV_FILE=/apps/env
-export $(cat $ENV_FILE | xargs)
-export DEBIAN_FRONTEND="noninteractive"
-
 sudo mkdir -p /apps/installed
 sudo chmod 777 /apps/installed
 
@@ -28,7 +24,7 @@ do
     . $SCRIPT_FILE
     ln -s $SCRIPT_FILE $INSTALLED_FILE
     echo "Installed $APP"
-    INSTALLED_DIR="$HOME/.xpipe/webtop-installed"
+    INSTALLED_DIR="$HOME/.xpipe/webtop/installed"
     mkdir -p "$INSTALLED_DIR"
     touch "$INSTALLED_DIR/$APP"
 done

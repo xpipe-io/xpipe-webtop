@@ -3,16 +3,10 @@ FROM ghcr.io/linuxserver/baseimage-selkies:ubunturesolute
 ENV TITLE="XPipe Webtop"
 ENV PIXELFLUX_WAYLAND=true
 
-ARG XPIPE_VERSION
-ARG XPIPE_REPOSITORY
 ARG XPIPE_PACKAGE
+ARG XPIPE_REPOSITORY
 ARG TARGETPLATFORM
 ARG DEBIAN_FRONTEND="noninteractive"
-
-RUN echo "**** check build args ****" \
-  && test -n "$XPIPE_VERSION" || (echo "\033[31mERROR [build] RUN: There was an error: the build argument XPIPE_VERSION must be set!\033[0m" && exit 1) \
-  && test -n "$XPIPE_REPOSITORY" || (echo "\033[31mERROR [build] RUN: There was an error: the build argument XPIPE_REPOSITORY must be set! (recommended is xpipe-io/xpipe)\033[0m" && exit 1) \
-  && test -n "$XPIPE_PACKAGE" || (echo "\033[31mERROR [build] RUN: There was an error: the build argument XPIPE_PACKAGE must be set! (recommended is xpipe)\033[0m" && exit 1)
 
 # prevent Ubuntu's firefox stub from being installed
 COPY /root/etc/apt/preferences.d/firefox-no-snap /etc/apt/preferences.d/firefox-no-snap
@@ -22,18 +16,31 @@ RUN  echo "**** install base packages ****" && \
   apt-get update && \
   DEBIAN_FRONTEND=noninteractive \
   apt-get install --no-install-recommends -y \
+    man-db \
+    manpages  \
+    dialog \
+    bash-completion \
+    kscreen \
+    net-tools \
+    dnsutils \
+    iputils-ping \
+    iproute2 \
+    traceroute \
+    nmap \
+    netcat-traditional \
+    tcpdump \
+    socat \
     cargo \
     dolphin \
     firefox \
     gwenview \
     kde-config-gtk-style \
+    htop \
     kdialog \
     kfind \
     khotkeys \
     ksystemstats \
     kio-extras \
-    kubuntu-settings-desktop \
-    kubuntu-wallpapers \
     kwin-addons \
     kwin-x11 \
     kwrite \
@@ -49,7 +56,6 @@ RUN  echo "**** install base packages ****" && \
     neovim \
     plasma-desktop \
     plasma-workspace \
-    plymouth-theme-kubuntu-logo \
     qml-module-qt-labs-platform \
     fonts-noto \
     fonts-noto-cjk \
@@ -106,24 +112,20 @@ RUN  echo "**** install tool packages ****" && \
     remmina-plugin-rdp && \
  apt-get autoclean
 
-RUN echo "**** XPipe **** ($TARGETPLATFORM)" && \
-  if [ "$TARGETPLATFORM" = "linux/amd64" ]; then XPIPE_ARTIFACT="xpipe-installer-linux-x86_64.deb"; else XPIPE_ARTIFACT="xpipe-installer-linux-arm64.deb"; fi && \
-  wget "https://github.com/$XPIPE_REPOSITORY/releases/download/$XPIPE_VERSION/${XPIPE_ARTIFACT}" && \
-  DEBIAN_FRONTEND=noninteractive \
-  apt-get update && \
-  apt-get install --no-install-recommends -y "./${XPIPE_ARTIFACT}" && \
-  rm "./${XPIPE_ARTIFACT}"
-
 RUN echo "**** kde tweaks ****" && \
     setcap -r \
     /usr/bin/kwin_wayland
 
-RUN echo "**** sudo tweaks ****" && echo 'Defaults env_keep += "DEBIAN_FRONTEND"' >> /etc/sudoers
-
 # add local files
 COPY /root /
 
-RUN echo "**** Create env file ****" && \
-    echo "TARGETPLATFORM=$TARGETPLATFORM" >> /apps/env && \
-    echo "XPIPE_VERSION=$XPIPE_VERSION" >> /apps/env
+RUN echo "**** enable services ****" && \
+    sudo update-rc.d polkitd defaults \
+    sudo update-rc.d packagekitd defaults
+
+RUN echo "**** Write env ****" && \
+    echo "export WEBTOP_TARGETPLATFORM=$TARGETPLATFORM" >> /etc/profile.d/webtop-env.sh && \
+    echo "export WEBTOP_XPIPE_PACKAGE=$XPIPE_PACKAGE" >> /etc/profile.d/webtop-env.sh && \
+    echo "export WEBTOP_XPIPE_REPOSITORY=$XPIPE_REPOSITORY" >> /etc/profile.d/webtop-env.sh && \
+    echo "export DEBIAN_FRONTEND=noninteractive" >> /etc/profile.d/webtop-env.sh
 

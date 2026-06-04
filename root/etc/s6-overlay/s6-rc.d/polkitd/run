@@ -1,0 +1,3 @@
+#!/usr/bin/with-contenv bash
+
+/usr/lib/polkit-1/polkitd

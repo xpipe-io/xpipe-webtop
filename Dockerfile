@@ -33,6 +33,7 @@ RUN  echo "**** install base packages ****" && \
     cargo \
     dolphin \
     firefox \
+    xdg-desktop-portal \
     gwenview \
     kde-config-gtk-style \
     htop \
@@ -116,12 +117,11 @@ RUN echo "**** kde tweaks ****" && \
     setcap -r \
     /usr/bin/kwin_wayland
 
+RUN echo "**** use bash for sh ****" && \
+    ln -s -f /usr/bin/bash /usr/bin/sh
+
 # add local files
 COPY /root /
-
-RUN echo "**** enable services ****" && \
-    sudo update-rc.d polkitd defaults \
-    sudo update-rc.d packagekitd defaults
 
 RUN echo "**** Write env ****" && \
     echo "export WEBTOP_TARGETPLATFORM=$TARGETPLATFORM" >> /etc/profile.d/webtop-env.sh && \

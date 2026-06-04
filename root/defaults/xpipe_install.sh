@@ -9,13 +9,9 @@ if [ -d $HOME/xpipe-dev ]; then
    $HOME/xpipe-dev/gradlew :dist:clean distAndInstall
   # sudo apt install $HOME/xpipe-dev/dist/build/dist/artifacts/xpipe-installer-linux-x86_64.deb
 else
-  if [ "$WEBTOP_TARGETPLATFORM" = "linux/amd64" ];
-    then XPIPE_ARTIFACT="xpipe-installer-linux-x86_64.deb"
-  else
-    XPIPE_ARTIFACT="xpipe-installer-linux-arm64.deb"
-  fi
-  wget "https://github.com/$WEBTOP_XPIPE_REPOSITORY/releases/latest/download/${XPIPE_ARTIFACT}"
-  apt-get update
-  apt-get install --no-install-recommends -y "./${XPIPE_ARTIFACT}"
-  rm "./${XPIPE_ARTIFACT}"
+  wget -qO- https://xpipe.io/signatures/0xDD3E0AD0.gpg > xpipe.gpg
+  sudo install -D -o root -g root -m 644 xpipe.gpg /etc/apt/keyrings/xpipe.gpg
+  rm xpipe.gpg
+  sudo sh -c 'echo "deb [signed-by=/etc/apt/keyrings/xpipe.gpg] https://apt.xpipe.io/ stable main" > /etc/apt/sources.list.d/xpipe.list'
+  sudo apt update && sudo apt install xpipe
 fi

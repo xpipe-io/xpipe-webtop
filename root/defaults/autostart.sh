@@ -18,8 +18,6 @@ STATE_FILE="$HOME/.initialized"
 if [ ! -f $STATE_FILE ]; then
   touch $STATE_FILE
 
-  konsole -e bash /defaults/xpipe-install.sh
-
   # Fix taskmanager bar
   XPIPE_DESKTOP_FILE=$([ -f "/usr/share/applications/xpipe-ptb.desktop" ] && echo "xpipe-ptb.desktop" || echo "xpipe.desktop")
   kwriteconfig6 --file $HOME/.config/plasma-org.kde.plasma.desktop-appletsrc --group Containments \
@@ -32,12 +30,18 @@ if [ ! -f $STATE_FILE ]; then
   # plasma-apply-lookandfeel -a io.xpipe.desktop
   # plasma-apply-wallpaperimage /usr/share/wallpapers/Webtop/contents/images/3000x2000.png
 
-  sleep 3
+  sleep 1
 
   # Reload changes
-  WAYLAND_DISPLAY=wayland-0 plasmashell --replace
-fi
+  plasmashell --replace
 
-xpipe open
+  while ! xhost +si:localuser:$( whoami ) ; do
+    sleep 1
+  done
+
+  nohup alacritty -e bash -c "/defaults/xpipe_install.sh && xpipe open" & disown >/dev/null 2>&1
+else
+  xpipe open
+fi
 
 exit 0

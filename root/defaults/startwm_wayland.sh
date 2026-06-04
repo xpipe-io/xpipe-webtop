@@ -88,11 +88,8 @@ dbus-run-session bash -c '
     WAYLAND_DISPLAY=wayland-1 python3 /kwin-xwayland.py &
     KWIN_PID=$!
     sleep 2
-    if [ -f /usr/lib/libexec/polkit-kde-authentication-agent-1 ]; then
-        /usr/lib/libexec/polkit-kde-authentication-agent-1 &
-    elif [ -f /usr/libexec/polkit-kde-authentication-agent-1 ]; then
-        /usr/libexec/polkit-kde-authentication-agent-1 &
-    fi
+
+    /usr/lib/x86_64-linux-gnu/libexec/polkit-kde-authentication-agent-1
 
     # The autostart scripts are not run by KDE, so we have to do it manually
     nohup bash /defaults/autostart.sh & disown

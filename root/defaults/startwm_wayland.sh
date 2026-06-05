@@ -60,6 +60,8 @@ if ! grep -q "$RULE_DESC" "$KWIN_RULES_FILE" 2>/dev/null; then
   kwriteconfig6 --file "$KWIN_RULES_FILE" --group "$RULE_ID" --key noborderrule 2
 fi
 
+echo "fastfetch" >> $HOME/.bashrc
+
 # Directories
 sudo rm -f /usr/share/dbus-1/system-services/org.freedesktop.UDisks2.service
 mkdir -p "${HOME}/.config/autostart" "${HOME}/.XDG" "${HOME}/.local/share/"

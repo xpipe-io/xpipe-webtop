@@ -44,6 +44,7 @@ RUN  echo "**** install base packages ****" && \
     kio-extras \
     kwin-addons \
     kwin-x11 \
+    fastfetch \
     kwrite \
     libkf6dbusaddons-bin \
     wget \
@@ -99,16 +100,9 @@ RUN  echo "**** install tool packages ****" && \
   DEBIAN_FRONTEND=noninteractive \
   apt-get install --no-install-recommends -y \
     konsole \
-    gnome-console \
-    gnome-terminal \
     alacritty \
-    kitty \
-    tilix \
     kate \
-    gedit \
-    terminator \
     remmina \
-    tmux \
     screen \
     remmina-plugin-rdp && \
  apt-get autoclean

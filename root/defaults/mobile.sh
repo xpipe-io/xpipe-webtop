@@ -7,12 +7,8 @@ kwriteconfig6 --file $HOME/.config/plasma-org.kde.plasma.desktop-appletsrc --gro
 
 KWIN_RULES_FILE="$HOME/.config/kwinrulesrc"
 RULE_DESC="maximize mobile"
+RULE_ID=231923
 if ! grep -q "$RULE_DESC" "$KWIN_RULES_FILE" 2>/dev/null; then
-  if command -v uuidgen &> /dev/null; then
-    RULE_ID=$(uuidgen)
-  else
-    RULE_ID=$(cat /proc/sys/kernel/random/uuid)
-  fi
   count=$(kreadconfig6 --file "$KWIN_RULES_FILE" --group General --key count --default 0)
   new_count=$((count + 1))
   kwriteconfig6 --file "$KWIN_RULES_FILE" --group General --key count "$new_count"

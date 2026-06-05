@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-if [ "$TARGETPLATFORM" = "linux/amd64" ]; then VSCODE_LINK="https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-x64"; else VSCODE_LINK="https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-arm64"; fi
+if [ "$WEBTOP_TARGETPLATFORM" = "linux/amd64" ]; then VSCODE_LINK="https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-x64"; else VSCODE_LINK="https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-arm64"; fi
 wget -O vscode.deb "${VSCODE_LINK}"
 DEBIAN_FRONTEND=noninteractive \
 sudo apt update

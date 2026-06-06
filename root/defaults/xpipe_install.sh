@@ -6,7 +6,7 @@ if [ -d $HOME/xpipe-dev ]; then
    sdk install java 26.0.1-zulu
    source "$HOME/.sdkman/bin/sdkman-init.sh"
    cd $HOME/xpipe-dev
-   $HOME/xpipe-dev/gradlew :dist:clean distAndInstall
+   $HOME/xpipe-dev/gradlew clean distAndInstall
   # sudo apt install $HOME/xpipe-dev/dist/build/dist/artifacts/xpipe-installer-linux-x86_64.deb
 else
   wget -qO- https://xpipe.io/signatures/0xDD3E0AD0.gpg > xpipe.gpg

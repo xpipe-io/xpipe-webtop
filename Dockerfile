@@ -49,6 +49,7 @@ RUN  echo "**** install base packages ****" && \
     libkf6dbusaddons-bin \
     wget \
     git \
+    libfuse2 \
     zip \
     unzip \
     kmod \

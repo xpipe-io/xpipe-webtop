@@ -18,6 +18,8 @@ STATE_FILE="$HOME/.initialized"
 if [ ! -f $STATE_FILE ]; then
   touch $STATE_FILE
 
+  echo "fastfetch" >> $HOME/.bashrc
+
   # Fix taskmanager bar
   XPIPE_DESKTOP_FILE=$([ -f "/usr/share/applications/xpipe-ptb.desktop" ] && echo "xpipe-ptb.desktop" || echo "xpipe.desktop")
   kwriteconfig6 --file $HOME/.config/plasma-org.kde.plasma.desktop-appletsrc --group Containments \
@@ -39,7 +41,7 @@ if [ ! -f $STATE_FILE ]; then
     sleep 1
   done
 
-  nohup alacritty -e bash -c "/defaults/xpipe_install.sh && xpipe open" & disown >/dev/null 2>&1
+  nohup alacritty --hold -T "XPipe install" -e bash -c "/defaults/xpipe_install.sh && xpipe open" & disown >/dev/null 2>&1
 else
   xpipe open
 fi

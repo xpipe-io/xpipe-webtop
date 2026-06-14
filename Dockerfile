@@ -1,7 +1,37 @@
+# syntax=docker/dockerfile:1
+# check=skip=SecretsUsedInArgOrEnv
 FROM ghcr.io/linuxserver/baseimage-selkies:ubunturesolute
 
+# From https://github.com/linuxserver/docker-baseimage-selkies?tab=readme-ov-file#options
 ENV TITLE="XPipe Webtop"
 ENV PIXELFLUX_WAYLAND=true
+ENV AUTO_GPU=true
+ENV FILE_MANAGER_PATH=/config
+ENV NO_GAMEPAD=true
+
+# From https://github.com/linuxserver/docker-baseimage-selkies?tab=readme-ov-file#selkies-application-settings
+ENV SELKIES_UI_TITLE="XPipe"
+ENV SELKIES_UI_SHOW_LOGO=false
+ENV SELKIES_UI_SIDEBAR_SHOW_AUDIO_SETTINGS=false
+ENV SELKIES_UI_SIDEBAR_SHOW_APPS=false
+ENV SELKIES_UI_SIDEBAR_SHOW_SHARING=false
+ENV SELKIES_UI_SIDEBAR_SHOW_GAMEPADS=false
+ENV SELKIES_UI_SIDEBAR_SHOW_GAMING_MODE=false
+ENV SELKIES_MICROPHONE_ENABLED=false
+ENV SELKIES_GAMEPAD_ENABLED=false
+ENV SELKIES_COMMAND_ENABLED=false
+ENV SELKIES_ENABLE_SHARING=false
+ENV SELKIES_ENABLE_COLLAB=false
+ENV SELKIES_ENABLE_SHARED=false
+ENV SELKIES_ENABLE_PLAYER2=false
+ENV SELKIES_ENABLE_PLAYER3=false
+ENV SELKIES_ENABLE_PLAYER4=false
+ENV SELKIES_FRAMERATE=30
+ENV SELKIES_UI_SIDEBAR_SHOW_VIDEO_SETTINGS=false
+ENV SELKIES_UI_SHOW_CORE_BUTTONS=false
+ENV SELKIES_AUDIO_ENABLED=false
+
+ENV XPIPE_API_KEY=""
 
 ARG XPIPE_PACKAGE
 ARG XPIPE_REPOSITORY
@@ -78,6 +108,14 @@ RUN  echo "**** install base packages ****" && \
    /var/tmp/* \
    /tmp/*
 
+RUN  echo "**** Enable manpages ****" && \
+     rm /etc/dpkg/dpkg.cfg.d/excludes && \
+     apt-get update && \
+     apt-get --reinstall install man-db manpages -y && \
+     apt-get install manpages-posix manpages-posix-dev -y && \
+     mv /usr/bin/man.REAL /usr/bin/man && \
+     mandb -c
+
 RUN echo "**** nerdfonts ****" && \
   curl -LO "https://github.com/ryanoasis/nerd-fonts/releases/latest/download/UbuntuMono.zip" && \
   mkdir -p "/usr/share/fonts/ubuntu-mono-nerd" && \
@@ -109,8 +147,7 @@ RUN  echo "**** install tool packages ****" && \
  apt-get autoclean
 
 RUN echo "**** kde tweaks ****" && \
-    setcap -r \
-    /usr/bin/kwin_wayland
+    setcap -r /usr/bin/kwin_wayland
 
 RUN echo "**** use bash for sh ****" && \
     ln -s -f /usr/bin/bash /usr/bin/sh

@@ -4,6 +4,7 @@
 while ! xhost +si:localuser:$( whoami ) ; do
   sleep 1
 done
+xhost +
 
 sleep 3
 
@@ -37,9 +38,12 @@ if [ ! -f $STATE_FILE ]; then
   # Reload changes
   plasmashell --replace
 
+  python3 -m pip install xpipe_api
+
   while ! xhost +si:localuser:$( whoami ) ; do
     sleep 1
   done
+  xhost +
 
   nohup alacritty --hold -T "XPipe install" -e bash -c "/defaults/xpipe_install.sh && xpipe open" & disown >/dev/null 2>&1
 else

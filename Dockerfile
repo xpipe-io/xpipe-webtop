@@ -32,11 +32,25 @@ ENV SELKIES_UI_SHOW_CORE_BUTTONS=false
 ENV SELKIES_AUDIO_ENABLED=false
 
 ENV XPIPE_API_KEY=""
+ENV XPIPE_WIZARD_PRECONFIGURED=false
+ENV XPIPE_PREINSTALLED_WEBTOP_APPS=""
 
-ARG XPIPE_PACKAGE
-ARG XPIPE_REPOSITORY
+ARG XPIPE_PACKAGE="Xpipe"
 ARG TARGETPLATFORM
 ARG DEBIAN_FRONTEND="noninteractive"
+
+# Displays
+EXPOSE 3000
+EXPOSE 3001
+
+# JDWP debugger
+EXPOSE 7857
+
+# API port
+EXPOSE 21721
+
+# SSH server
+EXPOSE 21722
 
 # prevent Ubuntu's firefox stub from being installed
 COPY /root/etc/apt/preferences.d/firefox-no-snap /etc/apt/preferences.d/firefox-no-snap
@@ -58,9 +72,11 @@ RUN  echo "**** install base packages ****" && \
     traceroute \
     nmap \
     netcat-traditional \
+    ethtool \
+    xz-utils \
+    mtr \
     tcpdump \
     socat \
-    cargo \
     dolphin \
     firefox \
     xdg-desktop-portal \
@@ -82,6 +98,7 @@ RUN  echo "**** install base packages ****" && \
     libfuse2 \
     zip \
     unzip \
+    debian-goodies \
     kmod \
     nano \
     mousepad \
@@ -93,12 +110,6 @@ RUN  echo "**** install base packages ****" && \
     fonts-noto \
     fonts-noto-cjk \
     systemsettings && \
-  cargo install \
-    wl-clipboard-rs-tools && \
-  echo "**** replace wl-clipboard with rust ****" && \
-  mv \
-    /config/.cargo/bin/wl-* \
-    /usr/bin/ && \
  apt-get remove -y plasma-welcome && \
  apt-get autoclean && \
  rm -rf \
@@ -123,9 +134,6 @@ RUN echo "**** nerdfonts ****" && \
   rm "UbuntuMono.zip" && \
   fc-cache -fv
 
-# ports and volumes
-EXPOSE 3000
-EXPOSE 3001
 VOLUME /config
 
 RUN \
@@ -155,9 +163,12 @@ RUN echo "**** use bash for sh ****" && \
 # add local files
 COPY /root /
 
+RUN echo "**** Fix wl-clipboard ****" && \
+    if [ "$TARGETPLATFORM" = "linux/amd64" ]; then PLATFORM="amd64"; else PLATFORM="arm64"; fi && \
+    apt-get install --no-install-recommends -y "/defaults/wl-clipboard_2.3.0-1_$PLATFORM.deb"
+
 RUN echo "**** Write env ****" && \
     echo "export WEBTOP_TARGETPLATFORM=$TARGETPLATFORM" >> /etc/profile.d/webtop-env.sh && \
     echo "export WEBTOP_XPIPE_PACKAGE=$XPIPE_PACKAGE" >> /etc/profile.d/webtop-env.sh && \
-    echo "export WEBTOP_XPIPE_REPOSITORY=$XPIPE_REPOSITORY" >> /etc/profile.d/webtop-env.sh && \
     echo "export DEBIAN_FRONTEND=noninteractive" >> /etc/profile.d/webtop-env.sh
 

@@ -84,7 +84,7 @@ export DISPLAY=:1
 sudo mkdir -p /tmp/.X11-unix
 sudo chmod 1777 /tmp/.X11-unix
 
-dbus-run-session bash -c '
+dbus-run-session bash -l -c '
     WAYLAND_DISPLAY=wayland-1 python3 /kwin-xwayland.py &
     KWIN_PID=$!
     sleep 2

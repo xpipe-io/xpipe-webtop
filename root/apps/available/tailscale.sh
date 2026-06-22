@@ -5,3 +5,6 @@ curl -fsSL https://pkgs.tailscale.com/stable/ubuntu/noble.tailscale-keyring.list
 sudo apt update
 DEBIAN_FRONTEND=noninteractive sudo apt install -y tailscale
 tailscale --version
+
+sudo touch "/etc/s6-overlay/s6-rc.d/user/contents.d/tailscaled"
+sudo s6-rc -u change tailscaled

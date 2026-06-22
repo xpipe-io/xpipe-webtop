@@ -5,7 +5,7 @@ on:
     branches: [ "main" ]
 
 jobs:
-  build-and-push-image:
+  test-image:
     runs-on: ubuntu-latest
     if: contains(github.event.head_commit.message, '[release]') || contains(github.event.head_commit.message, '[stage]')
     permissions:
@@ -16,8 +16,6 @@ jobs:
 
       - name: Set variables
         run: |
-          XPIPE_REPOSITORY=${{ contains(github.event.head_commit.message, '[release]') == true && 'xpipe-io/xpipe' || 'xpipe-io/xpipe-ptb' }}
-          echo "XPIPE_REPOSITORY=$XPIPE_REPOSITORY" >> $GITHUB_ENV
           XPIPE_PACKAGE=${{ contains(github.event.head_commit.message, '[release]') == true && 'xpipe' || 'xpipe-ptb' }}
           echo "XPIPE_PACKAGE=$XPIPE_PACKAGE" >> $GITHUB_ENV
       - name: Setup buildx

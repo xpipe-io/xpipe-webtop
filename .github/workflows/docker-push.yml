@@ -17,16 +17,15 @@ jobs:
       packages: write
       attestations: write
       id-token: write
+    needs: [
+      test-image
+    ]
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Set variables
         run: |
-          XPIPE_VERSION=$(cat "${{ github.workspace }}/${{ contains(github.event.head_commit.message, '[release]') == true && 'version-main' || 'version-ptb' }}")
-          echo "XPIPE_VERSION=$XPIPE_VERSION" >> $GITHUB_ENV
-          XPIPE_REPOSITORY=${{ contains(github.event.head_commit.message, '[release]') == true && 'xpipe-io/xpipe' || 'xpipe-io/xpipe-ptb' }}
-          echo "XPIPE_REPOSITORY=$XPIPE_REPOSITORY" >> $GITHUB_ENV
           XPIPE_PACKAGE=${{ contains(github.event.head_commit.message, '[release]') == true && 'xpipe' || 'xpipe-ptb' }}
           echo "XPIPE_PACKAGE=$XPIPE_PACKAGE" >> $GITHUB_ENV
           XPIPE_TAG=${{ contains(github.event.head_commit.message, '[release]') == true && 'main' || 'ptb' }}
@@ -64,8 +63,6 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
-            "XPIPE_VERSION=${{ env.XPIPE_VERSION }}"
-            "XPIPE_REPOSITORY=${{ env.XPIPE_REPOSITORY }}"
             "XPIPE_PACKAGE=${{ env.XPIPE_PACKAGE }}"
           platforms: ${{ contains(github.event.head_commit.message, '[release]') && 'linux/amd64,linux/arm64' || 'linux/amd64' }}
       - name: Generate artifact attestation

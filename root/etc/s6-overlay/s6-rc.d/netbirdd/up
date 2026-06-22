@@ -1,0 +1,9 @@
+#!/usr/bin/with-contenv bash
+
+
+if [[ ! -e /dev/net/tun ]]; then
+  echo "Container is missing /dev/net/tun device. For more details, see https://docs.xpipe.io/guide/webtop#network-tunnel-driver" > &2
+  exit 1
+fi
+
+netbird service start

@@ -1,0 +1,7 @@
+#!/usr/bin/with-contenv bash
+
+if [ -e /dev/net/tun ]; then
+  tailscaled --state=tailscaled.state --tun=userspace-networking --socks5-server=localhost:1055 --outbound-http-proxy-listen=localhost:1055
+else
+  tailscaled --state=tailscaled.state
+fi

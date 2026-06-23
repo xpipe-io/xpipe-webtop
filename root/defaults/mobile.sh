@@ -27,3 +27,5 @@ else
   kwriteconfig6 --file "$KWIN_RULES_FILE" --group "$RULE_ID" --key Enabled true
 fi
 
+mkdir -p "$HOME/.xpipe/webtop"
+touch "$HOME/.xpipe/webtop/mobile"

@@ -12,3 +12,4 @@ if grep -q "$RULE_DESC" "$KWIN_RULES_FILE" 2>/dev/null; then
   kwriteconfig6 --file "$KWIN_RULES_FILE" --group "$RULE_ID" --key Enabled false
 fi
 
+rm -f "$HOME/.xpipe/webtop/mobile" || true

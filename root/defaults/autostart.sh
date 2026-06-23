@@ -1,10 +1,9 @@
 #!/usr/bin/env bash
 
+set -x
+
 # Wait for display to be initialized
-while ! xhost +si:localuser:$( whoami ) ; do
-  sleep 1
-done
-xhost +
+/defaults/waitx.sh
 
 sleep 3
 
@@ -15,9 +14,10 @@ else
   /defaults/desktop.sh
 fi
 
-STATE_FILE="$HOME/.initialized"
-if [ ! -f $STATE_FILE ]; then
-  touch $STATE_FILE
+FIRST_INIT_FILE="$HOME/.first-init"
+SECOND_INIT_FILE="$HOME/.second-init"
+if [ ! -f $FIRST_INIT_FILE ]; then
+  touch $FIRST_INIT_FILE
 
   echo "fastfetch" >> $HOME/.bashrc
 
@@ -36,17 +36,15 @@ if [ ! -f $STATE_FILE ]; then
   sleep 1
 
   # Reload changes
-  plasmashell --replace
+  /defaults/reload.sh
 
   # Running this earlier breaks the desktop apps directory of KDE. Why?
   python3 -m pip install xpipe_api
 
-  while ! xhost +si:localuser:$( whoami ) ; do
-    sleep 1
-  done
-  xhost +
-
-  nohup alacritty --hold -T "XPipe install" -e bash -c "/defaults/xpipe_install.sh && $WEBTOP_XPIPE_PACKAGE open" & disown >/dev/null 2>&1
+  /defaults/waitx.sh
+elif [[ ! -f $SECOND_INIT_FILE ]]; then
+  touch $SECOND_INIT_FILE
+  nohup alacritty -T "XPipe install" -e bash -c "/defaults/xpipe_install.sh && $WEBTOP_XPIPE_PACKAGE open" </dev/null &>/dev/null & disown
 else
   $WEBTOP_XPIPE_PACKAGE open
 fi

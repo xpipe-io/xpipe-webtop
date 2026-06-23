@@ -10,7 +10,9 @@ if [ -d $HOME/xpipe-dev ]; then
 
    # $HOME/xpipe-dev/gradlew dist:clean distAndInstall
 
-   $HOME/xpipe-dev/gradlew app:runAttachedDebugger
+   # $HOME/xpipe-dev/gradlew app:runAttachedDebugger
+
+   $HOME/xpipe-dev/gradlew app:run
 
    # sudo apt install $HOME/xpipe-dev/dist/build/dist/artifacts/xpipe-installer-linux-x86_64.deb
 else

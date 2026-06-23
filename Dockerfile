@@ -35,7 +35,7 @@ ENV XPIPE_API_KEY=""
 ENV XPIPE_WIZARD_PRECONFIGURED=false
 ENV XPIPE_PREINSTALLED_WEBTOP_APPS=""
 
-ARG XPIPE_PACKAGE="Xpipe"
+ARG XPIPE_PACKAGE="xpipe"
 ARG TARGETPLATFORM
 ARG DEBIAN_FRONTEND="noninteractive"
 
@@ -65,6 +65,7 @@ RUN  echo "**** install base packages ****" && \
     dialog \
     bash-completion \
     kscreen \
+    at-spi2-core \
     net-tools \
     dnsutils \
     iputils-ping \

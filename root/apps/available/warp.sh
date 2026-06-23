@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-ghos
 wget -qO- https://releases.warp.dev/linux/keys/warp.asc | gpg --dearmor > warpdotdev.gpg
 sudo install -D -o root -g root -m 644 warpdotdev.gpg /etc/apt/keyrings/warpdotdev.gpg
 if [ "$WEBTOP_TARGETPLATFORM" = "linux/amd64" ]; then PLATFORM="amd64"; else PLATFORM="arm64"; fi

@@ -2,6 +2,7 @@
 
 set -e
 set -x
+export PATH="$HOME/.local/bin:$PATH"
 
 USER_HOME="$HOME"
 sudo chown -R abc "$USER_HOME"

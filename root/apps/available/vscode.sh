@@ -2,9 +2,8 @@
 
 if [ "$WEBTOP_TARGETPLATFORM" = "linux/amd64" ]; then VSCODE_LINK="https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-x64"; else VSCODE_LINK="https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-arm64"; fi
 wget -O vscode.deb "${VSCODE_LINK}"
-DEBIAN_FRONTEND=noninteractive \
 sudo apt update
-sudo apt install --no-install-recommends -y "./vscode.deb"
+sudo apt install --no-install-recommends -y -q "./vscode.deb"
 rm "./vscode.deb"
 
 sudo mv /usr/bin/code /usr/bin/code-sandbox

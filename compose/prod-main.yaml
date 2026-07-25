@@ -1,0 +1,4 @@
+services:
+  xpipe-webtop:
+    environment:
+      XPIPE_PACKAGE: "xpipe"

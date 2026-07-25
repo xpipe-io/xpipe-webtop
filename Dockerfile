@@ -2,6 +2,10 @@
 # check=skip=SecretsUsedInArgOrEnv
 FROM ghcr.io/linuxserver/baseimage-selkies:ubunturesolute
 
+ENV XPIPE_API_KEY=""
+ENV XPIPE_WIZARD_PRECONFIGURED=false
+ENV XPIPE_PREINSTALLED_WEBTOP_APPS=""
+
 # From https://github.com/linuxserver/docker-baseimage-selkies?tab=readme-ov-file#options
 ENV TITLE="XPipe Webtop"
 ENV PIXELFLUX_WAYLAND=true
@@ -31,10 +35,6 @@ ENV SELKIES_UI_SIDEBAR_SHOW_VIDEO_SETTINGS=false
 ENV SELKIES_UI_SHOW_CORE_BUTTONS=false
 ENV SELKIES_AUDIO_ENABLED=false
 
-ENV XPIPE_API_KEY=""
-ENV XPIPE_WIZARD_PRECONFIGURED=false
-ENV XPIPE_PREINSTALLED_WEBTOP_APPS=""
-
 ARG XPIPE_PACKAGE="xpipe"
 ARG TARGETPLATFORM
 ARG DEBIAN_FRONTEND="noninteractive"
@@ -50,7 +50,7 @@ EXPOSE 7857
 EXPOSE 21721
 
 # SSH server
-EXPOSE 21722
+EXPOSE 21222
 
 # prevent Ubuntu's firefox stub from being installed
 COPY /root/etc/apt/preferences.d/firefox-no-snap /etc/apt/preferences.d/firefox-no-snap
@@ -82,6 +82,7 @@ RUN  echo "**** install base packages ****" && \
     firefox \
     xdg-desktop-portal \
     gwenview \
+    freerdp3-sdl \
     kde-config-gtk-style \
     htop \
     kdialog \
@@ -90,6 +91,7 @@ RUN  echo "**** install base packages ****" && \
     ksystemstats \
     kio-extras \
     kwin-addons \
+    openssh-server \
     kwin-x11 \
     fastfetch \
     kwrite \
@@ -111,7 +113,7 @@ RUN  echo "**** install base packages ****" && \
     fonts-noto \
     fonts-noto-cjk \
     systemsettings && \
- apt-get remove -y plasma-welcome && \
+ apt-get remove -y plasma-welcome docker-ce docker-buildx-plugin docker-ce-cli docker-compose-plugin && \
  apt-get autoclean && \
  rm -rf \
    /config/.cache \
@@ -164,6 +166,10 @@ RUN echo "**** use bash for sh ****" && \
 # add local files
 COPY /root /
 
+RUN echo "**** Adjust sshd config ****" && \
+    sed --in-place 's/^#\?Port 22$/Port 21222/g' /etc/ssh/sshd_config && \
+    sed --in-place 's/^#\?PasswordAuthentication yes$/PasswordAuthentication no/g' /etc/ssh/sshd_config
+
 RUN echo "**** Fix wl-clipboard ****" && \
     if [ "$TARGETPLATFORM" = "linux/amd64" ]; then PLATFORM="amd64"; else PLATFORM="arm64"; fi && \
     apt-get install --no-install-recommends -y "/defaults/wl-clipboard_2.3.0-1_$PLATFORM.deb"
@@ -171,5 +177,6 @@ RUN echo "**** Fix wl-clipboard ****" && \
 RUN echo "**** Write env ****" && \
     echo "export WEBTOP_TARGETPLATFORM=$TARGETPLATFORM" >> /etc/profile.d/webtop-env.sh && \
     echo "export WEBTOP_XPIPE_PACKAGE=$XPIPE_PACKAGE" >> /etc/profile.d/webtop-env.sh && \
-    echo "export DEBIAN_FRONTEND=noninteractive" >> /etc/profile.d/webtop-env.sh
+    echo "export DEBIAN_FRONTEND=noninteractive" >> /etc/profile.d/webtop-env.sh && \
+    echo "export ELECTRON_OZONE_PLATFORM_HINT=auto" >> /etc/profile.d/webtop-env.sh
 

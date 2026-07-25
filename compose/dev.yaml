@@ -1,0 +1,5 @@
+services:
+  xpipe-webtop:
+    volumes:
+      - ${XPIPE_REPO_DIR}:/config/xpipe-dev:rw
+

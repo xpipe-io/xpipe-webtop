@@ -19,6 +19,11 @@ SECOND_INIT_FILE="$HOME/.second-init"
 if [ ! -f $FIRST_INIT_FILE ]; then
   touch $FIRST_INIT_FILE
 
+   if [[ -v SSH_KEY ]]; then
+     mkdir -p "$HOME/.ssh"
+    echo "$SSH_KEY" >> "$HOME/.ssh/authorized_keys"
+   fi
+
   echo "fastfetch" >> $HOME/.bashrc
 
   # Fix taskmanager bar
@@ -44,7 +49,7 @@ if [ ! -f $FIRST_INIT_FILE ]; then
   /defaults/waitx.sh
 elif [[ ! -f $SECOND_INIT_FILE ]]; then
   touch $SECOND_INIT_FILE
-  nohup alacritty -T "XPipe install" -e bash -c "/defaults/xpipe_install.sh && $WEBTOP_XPIPE_PACKAGE open" </dev/null &>/dev/null & disown
+  nohup alacritty --hold -T "XPipe install" -e bash -c "/defaults/xpipe_install.sh && $WEBTOP_XPIPE_PACKAGE open" </dev/null &>/dev/null & disown
 else
   $WEBTOP_XPIPE_PACKAGE open
 fi

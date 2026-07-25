@@ -1,0 +1,4 @@
+#!/usr/bin/with-contenv bash
+
+ssh-keygen -A > /var/log/ssh-keygen.log
+/usr/sbin/sshd -D -E /var/log/sshd.log

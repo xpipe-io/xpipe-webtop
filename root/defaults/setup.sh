@@ -11,6 +11,9 @@ if [ -f $STATE_FILE ]; then
   return
 fi
 
+# Generate remmina secret for pw encryption
+remmina --help &>/dev/null
+
 # Disable compositing and screen locking
 if [ ! -f $HOME/.config/kwinrc ]; then
   kwriteconfig6 --file $HOME/.config/kwinrc --group Compositing --key Enabled false

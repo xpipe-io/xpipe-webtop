@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-set -x
-
 # Wait for display to be initialized
 /defaults/waitx.sh
 
@@ -27,7 +25,7 @@ if [ ! -f $FIRST_INIT_FILE ]; then
   echo "fastfetch" >> $HOME/.bashrc
 
   # Fix taskmanager bar
-  XPIPE_DESKTOP_FILE=$([[ $WEBTOP_XPIPE_PACKAGE == "xpipe-ptb" ]] && echo "xpipe-ptb.desktop" || echo "xpipe.desktop")
+  XPIPE_DESKTOP_FILE=$([[ $XPIPE_PACKAGE == "xpipe-ptb" ]] && echo "xpipe-ptb.desktop" || echo "xpipe.desktop")
   kwriteconfig6 --file $HOME/.config/plasma-org.kde.plasma.desktop-appletsrc --group Containments \
     --group 2 --group Applets --group 5 --group Configuration --group General --key launchers \
     "applications:systemsettings.desktop,applications:org.kde.dolphin.desktop,applications:firefox.desktop,applications:org.kde.konsole.desktop,applications:org.kde.kate.desktop,applications:$XPIPE_DESKTOP_FILE"
@@ -47,11 +45,16 @@ if [ ! -f $FIRST_INIT_FILE ]; then
   python3 -m pip install xpipe_api
 
   /defaults/waitx.sh
+  exit 0
 elif [[ ! -f $SECOND_INIT_FILE ]]; then
+  # Do second init stuff ...
   touch $SECOND_INIT_FILE
-  nohup alacritty --hold -T "XPipe install" -e bash -c "/defaults/xpipe_install.sh && $WEBTOP_XPIPE_PACKAGE open" </dev/null &>/dev/null & disown
+fi
+
+if command -V $XPIPE_PACKAGE; then
+  $XPIPE_PACKAGE open
 else
-  $WEBTOP_XPIPE_PACKAGE open
+  nohup alacritty --hold -T "XPipe install" -e bash -c "/defaults/xpipe_install.sh && $XPIPE_PACKAGE open" </dev/null &>/dev/null & disown
 fi
 
 exit 0

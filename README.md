@@ -27,13 +27,13 @@ For the usage of `XPIPE_REPO_DIR` in the env file, see further down below. You c
 Then, you can run the container with the latest stable XPipe release:
 
 ```bash
-docker compose --env-file ./compose/.env.local -f ./compose/core.yaml -f ./compose/prod-main.yaml up
+docker compose --env-file ./compose/.env.local -f ./compose/core.yaml -f ./compose/prod-main.yaml up --build
 ```
 
 To run the latest PTB release instead, you can use
 
 ```bash
-docker compose --env-file ./compose/.env.local -f ./compose/core.yaml -f ./compose/prod-ptb.yaml up
+docker compose --env-file ./compose/.env.local -f ./compose/core.yaml -f ./compose/prod-ptb.yaml up --build
 ```
 
 ### Dev builds
@@ -43,7 +43,7 @@ You can make use of a local development within the container by cloning the repo
 You can run this with
 
 ```bash
-docker compose --env-file ./compose/.env.local -f ./compose/core.yaml -f ./compose/dev.yaml up
+docker compose --env-file ./compose/.env.local -f ./compose/core.yaml -f ./compose/dev.yaml up --build
 ```
 
 ### Debugging
@@ -53,7 +53,7 @@ You can also attach a Java debugger to the dev build of XPipe by passing the env
 You can run this with
 
 ```bash
-docker compose --env-file ./compose/.env.local -f ./compose/core.yaml -f ./compose/dev-debug.yaml up
+docker compose --env-file ./compose/.env.local -f ./compose/core.yaml -f ./compose/dev-debug.yaml up --build
 ```
 
 ### Tests

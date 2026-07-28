@@ -32,5 +32,5 @@ else
   sudo install -D -o root -g root -m 644 xpipe.gpg /etc/apt/keyrings/xpipe.gpg
   rm xpipe.gpg
   sudo sh -c 'echo "deb [signed-by=/etc/apt/keyrings/xpipe.gpg] https://apt.xpipe.io/ stable main" > /etc/apt/sources.list.d/xpipe.list'
-  sudo apt update && sudo apt install -y $WEBTOP_XPIPE_PACKAGE
+  sudo apt update && sudo apt install -y $XPIPE_PACKAGE
 fi

@@ -5,6 +5,7 @@ FROM ghcr.io/linuxserver/baseimage-selkies:ubunturesolute
 ENV XPIPE_API_KEY=""
 ENV XPIPE_WIZARD_PRECONFIGURED=false
 ENV XPIPE_PREINSTALLED_WEBTOP_APPS=""
+ENV XPIPE_PACKAGE="xpipe"
 
 # From https://github.com/linuxserver/docker-baseimage-selkies?tab=readme-ov-file#options
 ENV TITLE="XPipe Webtop"
@@ -34,8 +35,8 @@ ENV SELKIES_FRAMERATE=30
 ENV SELKIES_UI_SIDEBAR_SHOW_VIDEO_SETTINGS=false
 ENV SELKIES_UI_SHOW_CORE_BUTTONS=false
 ENV SELKIES_AUDIO_ENABLED=false
+ENV SELKIES_USE_BROWSER_CURSORS=true
 
-ARG XPIPE_PACKAGE="xpipe"
 ARG TARGETPLATFORM
 ARG DEBIAN_FRONTEND="noninteractive"
 
@@ -176,7 +177,6 @@ RUN echo "**** Fix wl-clipboard ****" && \
 
 RUN echo "**** Write env ****" && \
     echo "export WEBTOP_TARGETPLATFORM=$TARGETPLATFORM" >> /etc/profile.d/webtop-env.sh && \
-    echo "export WEBTOP_XPIPE_PACKAGE=$XPIPE_PACKAGE" >> /etc/profile.d/webtop-env.sh && \
     echo "export DEBIAN_FRONTEND=noninteractive" >> /etc/profile.d/webtop-env.sh && \
     echo "export ELECTRON_OZONE_PLATFORM_HINT=auto" >> /etc/profile.d/webtop-env.sh
 

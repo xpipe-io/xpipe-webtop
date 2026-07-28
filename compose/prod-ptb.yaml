@@ -1,3 +1,4 @@
+name: xpipe-webtop-prod-ptb
 services:
   xpipe-webtop:
     environment:

@@ -1,5 +1,7 @@
+name: xpipe-webtop-dev
 services:
   xpipe-webtop:
     volumes:
+      - ${XPIPE_DATA_DIR}:/config:rw
       - ${XPIPE_REPO_DIR}:/config/xpipe-dev:rw
 

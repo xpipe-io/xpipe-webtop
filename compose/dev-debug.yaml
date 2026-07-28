@@ -1,6 +1,8 @@
+name: xpipe-webtop-dev-debug
 services:
   xpipe-webtop:
     volumes:
+      - ${XPIPE_DATA_DIR}:/config:rw
       - ${XPIPE_REPO_DIR}:/config/xpipe-dev:rw
     ports:
       - 127.0.0.1:7857:7857

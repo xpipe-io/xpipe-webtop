@@ -3,10 +3,10 @@ services:
     build:
       context: ./../
       dockerfile: Dockerfile
-    env_file: ./../.env.local
     ports:
       - 127.0.0.1:3000:3000
       - 127.0.0.1:3001:3001
       - 127.0.0.1:21222:21222
       - 127.0.0.1:21721:21721
+      - 127.0.0.1:21722:21722
     restart: unless-stopped

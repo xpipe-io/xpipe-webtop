@@ -1,3 +1,4 @@
+name: xpipe-webtop-prod
 services:
   xpipe-webtop:
     environment:

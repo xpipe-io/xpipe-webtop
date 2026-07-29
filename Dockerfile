@@ -3,7 +3,6 @@
 FROM ghcr.io/linuxserver/baseimage-selkies:ubunturesolute
 
 ENV XPIPE_API_KEY=""
-ENV XPIPE_WIZARD_PRECONFIGURED=false
 ENV XPIPE_PREINSTALLED_WEBTOP_APPS=""
 ENV XPIPE_PACKAGE="xpipe"
 
@@ -13,6 +12,7 @@ ENV PIXELFLUX_WAYLAND=true
 ENV AUTO_GPU=true
 ENV FILE_MANAGER_PATH=/config
 ENV NO_GAMEPAD=true
+ENV START_DOCKER=false
 
 # From https://github.com/linuxserver/docker-baseimage-selkies?tab=readme-ov-file#selkies-application-settings
 ENV SELKIES_UI_TITLE="XPipe"
@@ -110,6 +110,8 @@ RUN  echo "**** install base packages ****" && \
     neovim \
     plasma-desktop \
     plasma-workspace \
+    qtwayland5 \
+    rsync \
     qml-module-qt-labs-platform \
     fonts-noto \
     fonts-noto-cjk \
@@ -177,6 +179,5 @@ RUN echo "**** Fix wl-clipboard ****" && \
 
 RUN echo "**** Write env ****" && \
     echo "export WEBTOP_TARGETPLATFORM=$TARGETPLATFORM" >> /etc/profile.d/webtop-env.sh && \
-    echo "export DEBIAN_FRONTEND=noninteractive" >> /etc/profile.d/webtop-env.sh && \
-    echo "export ELECTRON_OZONE_PLATFORM_HINT=auto" >> /etc/profile.d/webtop-env.sh
+    echo "export DEBIAN_FRONTEND=noninteractive" >> /etc/profile.d/webtop-env.sh
 

@@ -5,4 +5,5 @@ echo 'deb [signed-by=/usr/share/keyrings/wezterm-fury.gpg] https://apt.fury.io/w
 sudo chmod 644 /usr/share/keyrings/wezterm-fury.gpg
 sudo apt update
 sudo apt install -y wezterm
+echo -e "local wezterm = require 'wezterm'\nlocal config = wezterm.config_builder()\nconfig.enable_wayland = false\nreturn config\n" >> .wezterm.lua
 wezterm --version

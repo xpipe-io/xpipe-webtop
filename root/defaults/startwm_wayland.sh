@@ -8,6 +8,8 @@ export XDG_CURRENT_DESKTOP=KDE
 export XDG_SESSION_TYPE=wayland
 export KDE_SESSION_VERSION=6
 export DISPLAY=:1
+export ZED_ALLOW_EMULATED_GPU=1
+export ELECTRON_OZONE_PLATFORM_HINT=auto
 
 sudo mkdir -p /tmp/.X11-unix
 sudo chmod 1777 /tmp/.X11-unix

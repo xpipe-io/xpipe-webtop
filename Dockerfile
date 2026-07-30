@@ -38,7 +38,6 @@ ENV SELKIES_AUDIO_ENABLED=false
 ENV SELKIES_USE_BROWSER_CURSORS=true
 
 ARG TARGETPLATFORM
-ARG DEBIAN_FRONTEND="noninteractive"
 
 # Displays
 EXPOSE 3000
@@ -166,18 +165,20 @@ RUN echo "**** kde tweaks ****" && \
 RUN echo "**** use bash for sh ****" && \
     ln -s -f /usr/bin/bash /usr/bin/sh
 
-# add local files
+COPY /wl-clipboard /tmp
+
+RUN echo "**** Fix wl-clipboard ****" && \
+    if [ "$TARGETPLATFORM" = "linux/amd64" ]; then PLATFORM="amd64"; else PLATFORM="arm64"; fi && \
+    apt-get install --no-install-recommends -y "/tmp/wl-clipboard_2.3.0-1_$PLATFORM.deb"
+
 COPY /root /
 
 RUN echo "**** Adjust sshd config ****" && \
     sed --in-place 's/^#\?Port 22$/Port 21222/g' /etc/ssh/sshd_config && \
-    sed --in-place 's/^#\?PasswordAuthentication yes$/PasswordAuthentication no/g' /etc/ssh/sshd_config
+    sed --in-place 's/^#\?PasswordAuthentication yes$/PasswordAuthentication no/g' /etc/ssh/sshd_config \
 
-RUN echo "**** Fix wl-clipboard ****" && \
-    if [ "$TARGETPLATFORM" = "linux/amd64" ]; then PLATFORM="amd64"; else PLATFORM="arm64"; fi && \
-    apt-get install --no-install-recommends -y "/defaults/wl-clipboard_2.3.0-1_$PLATFORM.deb"
 
-RUN echo "**** Write env ****" && \
-    echo "export WEBTOP_TARGETPLATFORM=$TARGETPLATFORM" >> /etc/profile.d/webtop-env.sh && \
-    echo "export DEBIAN_FRONTEND=noninteractive" >> /etc/profile.d/webtop-env.sh
+RUN echo "**** Write timestamp ****" && \
+    date > /defaults/timestamp
+
 

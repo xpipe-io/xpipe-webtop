@@ -175,7 +175,7 @@ COPY /root /
 
 RUN echo "**** Adjust sshd config ****" && \
     sed --in-place 's/^#\?Port 22$/Port 21222/g' /etc/ssh/sshd_config && \
-    sed --in-place 's/^#\?PasswordAuthentication yes$/PasswordAuthentication no/g' /etc/ssh/sshd_config \
+    sed --in-place 's/^#\?PasswordAuthentication yes$/PasswordAuthentication no/g' /etc/ssh/sshd_config
 
 
 RUN echo "**** Write timestamp ****" && \

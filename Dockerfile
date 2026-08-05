@@ -117,6 +117,7 @@ RUN  echo "**** install base packages ****" && \
     systemsettings && \
  apt-get remove -y plasma-welcome docker-ce docker-buildx-plugin docker-ce-cli docker-compose-plugin && \
  apt-get autoclean && \
+ apt-get autoremove && \
  rm -rf \
    /config/.cache \
    /config/.launchpadlib \
@@ -157,7 +158,8 @@ RUN  echo "**** install tool packages ****" && \
     remmina \
     screen \
     remmina-plugin-rdp && \
- apt-get autoclean
+ apt-get autoclean && \
+ apt-get autoremove
 
 RUN echo "**** kde tweaks ****" && \
     setcap -r /usr/bin/kwin_wayland

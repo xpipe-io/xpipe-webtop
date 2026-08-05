@@ -6,7 +6,6 @@ The webtop can either be set up manually or also through the built-in webtop dep
 
 You can find the documentation at [https://docs.xpipe.io/guide/webtop](https://docs.xpipe.io/guide/webtop).
 
-
 <div align="center">
     <img src="https://github.com/xpipe-io/.github/raw/main/img/webtop.png" width="77%" />
     <img src="https://github.com/xpipe-io/.github/raw/main/img/1x1.png" width="2%" />

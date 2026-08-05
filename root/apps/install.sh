@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-set -e
-
 sudo mkdir -p /apps/installed
 sudo chmod 777 /apps/installed
 
@@ -22,6 +20,11 @@ do
 
     SCRIPT_FILE="/apps/available/$APP.sh"
     . $SCRIPT_FILE
+    if [[ $? != 0 ]]; then
+      echo "App $APP failed to install"
+      exit 1;
+    fi
+
     ln -s $SCRIPT_FILE $INSTALLED_FILE
     echo "Installed $APP"
     INSTALLED_DIR="$HOME/.xpipe/webtop/installed"

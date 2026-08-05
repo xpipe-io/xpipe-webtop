@@ -3,11 +3,15 @@ services:
     build:
       context: ./../
       dockerfile: Dockerfile
+    hostname: xpipe-webtop
+    environment:
+      - PUID=1000
+      - PGID=1000
     ports:
-      - 127.0.0.1:3000:3000
-      - 127.0.0.1:3001:3001
-      - 127.0.0.1:21222:21222
-      - 127.0.0.1:21721:21721
-      - 127.0.0.1:21722:21722
+      - 3000:3000
+      - 3001:3001
+      - 21222:21222
+      - 21721:21721
+      - 21722:21722
     shm_size: 256mb
     restart: unless-stopped

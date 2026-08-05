@@ -1,0 +1,12 @@
+#!/bin/bash
+
+BIN=/usr/bin/firefox.distrib
+
+export GDK_BACKEND=x11
+if ls -l /dev/dri/* > /dev/null 2>&1; then
+  if pgrep kwin_wayland > /dev/null 2>&1; then
+    export GDK_BACKEND=wayland
+  fi
+fi
+
+${BIN} "$@"

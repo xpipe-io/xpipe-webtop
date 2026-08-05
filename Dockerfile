@@ -165,6 +165,8 @@ RUN echo "**** kde tweaks ****" && \
 RUN echo "**** use bash for sh ****" && \
     ln -s -f /usr/bin/bash /usr/bin/sh
 
+RUN echo "**** Move firefox ****" && dpkg-divert --rename --local /usr/bin/firefox
+
 COPY /wl-clipboard /tmp
 
 RUN echo "**** Fix wl-clipboard ****" && \

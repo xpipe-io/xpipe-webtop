@@ -1,12 +1,17 @@
-![Webtop](https://github.com/xpipe-io/.github/raw/main/img/webtop.png)
-
 # XPipe Webtop
 
-XPipe Webtop is a web-based desktop environment that can be run as a docker/OCI container and accessed from a browser or the XPipe mobile app. The desktop environment comes with XPipe, various terminals, editors, and other useful tools preinstalled and configured. It also supports transferring your settings from your local installation to the webtop environment.
+XPipe Webtop is a web-based desktop environment that can be run as a docker/OCI container and accessed from a browser or the XPipe mobile app. The Ubuntu 26.04 + KDE6 based desktop environment comes with XPipe, various terminals, editors, and other useful tools preinstalled and configured. It also supports transferring your settings from your local installation to the webtop environment.
 
 The webtop can either be set up manually or also through the built-in webtop deployment wizard in XPipe, which can automatically configure and deploy a webtop container for docker, podman, and Proxmox.
 
 You can find the documentation at [https://docs.xpipe.io/guide/webtop](https://docs.xpipe.io/guide/webtop).
+
+
+<div align="center">
+    <img src="https://github.com/xpipe-io/.github/raw/main/img/webtop.png" width="77%" />
+    <img src="https://github.com/xpipe-io/.github/raw/main/img/1x1.png" width="2%" />
+    <img src="https://github.com/xpipe-io/.github/raw/main/img/webtop-mobile.png" width="20%"/>
+</div>
 
 ## Development
 

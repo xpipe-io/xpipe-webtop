@@ -6,5 +6,5 @@ source keeper-env/bin/activate
 pip install keepercommander
 mkdir -p /config/.local/bin
 mkdir -p /config/.local/share
-sudo ln -s /config/keeper-env/bin/keeper /config/.local/bin/keeper
+ln -s /config/keeper-env/bin/keeper /config/.local/bin/keeper || true
 keeper --version

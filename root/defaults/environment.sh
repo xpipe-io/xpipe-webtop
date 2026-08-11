@@ -1,0 +1,12 @@
+#!/bin/bash
+
+export QT_QPA_PLATFORM=wayland
+export XDG_CURRENT_DESKTOP=KDE
+export XDG_SESSION_TYPE=wayland
+export KDE_SESSION_VERSION=6
+export DISPLAY=:1
+export ZED_ALLOW_EMULATED_GPU=1
+export ELECTRON_OZONE_PLATFORM_HINT=auto
+export DEBIAN_FRONTEND=noninteractive
+export MOZ_ENABLE_WAYLAND=0
+export WAYLAND_DISPLAY=wayland-0

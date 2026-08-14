@@ -31,10 +31,12 @@ else
   sudo apt update
   if [[ -v XPIPE_VPN ]]; then
     /apps/install.sh "$XPIPE_VPN"
+    mkdir -p "$HOME/.xpipe/webtop/"
+    echo "$XPIPE_VPN_HOST" > "$HOME/.xpipe/webtop/host"
   fi
   wget -qO- https://xpipe.io/signatures/0xDD3E0AD0.gpg > xpipe.gpg
   sudo install -D -o root -g root -m 644 xpipe.gpg /etc/apt/keyrings/xpipe.gpg
   rm xpipe.gpg
   sudo sh -c 'echo "deb [signed-by=/etc/apt/keyrings/xpipe.gpg] https://apt.xpipe.io/ stable main" > /etc/apt/sources.list.d/xpipe.list'
-  sudo apt install -y $XPIPE_PACKAGE
+  sudo apt update && sudo apt install -y $XPIPE_PACKAGE
 fi

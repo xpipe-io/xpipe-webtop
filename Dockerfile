@@ -4,6 +4,7 @@ FROM ghcr.io/linuxserver/baseimage-selkies:ubunturesolute
 
 ENV XPIPE_API_KEY=""
 ENV XPIPE_VPN=""
+ENV XPIPE_VPN_HOST=""
 ENV XPIPE_PACKAGE="xpipe"
 
 # From https://github.com/linuxserver/docker-baseimage-selkies?tab=readme-ov-file#options

@@ -9,4 +9,3 @@ export ZED_ALLOW_EMULATED_GPU=1
 export ELECTRON_OZONE_PLATFORM_HINT=auto
 export DEBIAN_FRONTEND=noninteractive
 export MOZ_ENABLE_WAYLAND=0
-export WAYLAND_DISPLAY=wayland-0

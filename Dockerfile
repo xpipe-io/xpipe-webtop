@@ -77,6 +77,7 @@ RUN  echo "**** install base packages ****" && \
     ethtool \
     xz-utils \
     mtr \
+    lsof \
     tcpdump \
     socat \
     dolphin \
@@ -108,6 +109,7 @@ RUN  echo "**** install base packages ****" && \
     mousepad \
     vim \
     neovim \
+    ark \
     plasma-desktop \
     plasma-workspace \
     qtwayland5 \

@@ -83,6 +83,7 @@ RUN  echo "**** install base packages ****" && \
     dolphin \
     firefox \
     xdg-desktop-portal \
+    xdg-desktop-portal-kde \
     gwenview \
     freerdp3-sdl \
     kde-config-gtk-style \

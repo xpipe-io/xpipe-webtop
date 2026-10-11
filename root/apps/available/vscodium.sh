@@ -7,11 +7,9 @@ wget -qO - https://gitlab.com/paulcarroty/vscodium-deb-rpm-repo/raw/master/pub.g
 echo -e 'Types: deb\nURIs: https://download.vscodium.com/debs\nSuites: vscodium\nComponents: main\nArchitectures: amd64 arm64\nSigned-by: /usr/share/keyrings/vscodium-archive-keyring.gpg' \
   | sudo tee /etc/apt/sources.list.d/vscodium.sources
 
-sudo apt update && sudo apt install codium
+sudo apt update && sudo apt install -y codium
 
-sudo mv /usr/bin/codium /usr/bin/codium-sandbox
-echo -e '#!/bin/bash\nDONT_PROMPT_WSL_INSTALL=No_Prompt_please /usr/bin/codium-sandbox --no-sandbox --user-data-dir=~/.vscodium "$@"' | sudo tee /usr/bin/codium
+sudo rm -f /usr/bin/codium
+echo -e '#!/bin/bash\nDONT_PROMPT_WSL_INSTALL=No_Prompt_please /usr/share/codium/bin/codium --no-sandbox --user-data-dir=~/.vscodium "$@"' | sudo tee /usr/bin/codium
 sudo chmod a+x /usr/bin/codium
-codium --version
-
 codium --version

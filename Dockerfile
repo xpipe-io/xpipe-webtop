@@ -5,7 +5,8 @@ FROM ghcr.io/linuxserver/baseimage-selkies:ubunturesolute
 ENV XPIPE_API_KEY=""
 ENV XPIPE_VPN=""
 ENV XPIPE_VPN_HOST=""
-ENV XPIPE_PACKAGE="xpipe"
+ARG XPIPE_PACKAGE="xpipe"
+ENV XPIPE_PACKAGE="${XPIPE_PACKAGE}"
 
 # From https://github.com/linuxserver/docker-baseimage-selkies?tab=readme-ov-file#options
 ENV TITLE="XPipe Webtop"
@@ -37,8 +38,6 @@ ENV SELKIES_UI_SIDEBAR_SHOW_VIDEO_SETTINGS=false
 ENV SELKIES_UI_SHOW_CORE_BUTTONS=false
 ENV SELKIES_AUDIO_ENABLED=false
 ENV SELKIES_USE_BROWSER_CURSORS=true
-
-ARG TARGETPLATFORM
 
 # Displays
 EXPOSE 3000
@@ -135,10 +134,11 @@ RUN  echo "**** Enable manpages ****" && \
      apt-get --reinstall install man-db manpages -y && \
      apt-get install manpages-posix manpages-posix-dev -y && \
      mv /usr/bin/man.REAL /usr/bin/man && \
-     mandb -c
+     mandb -c && \
+     rm -rf /var/lib/apt/lists/*
 
 RUN echo "**** nerdfonts ****" && \
-  curl -LO "https://github.com/ryanoasis/nerd-fonts/releases/latest/download/UbuntuMono.zip" && \
+  curl -fLO "https://github.com/ryanoasis/nerd-fonts/releases/latest/download/UbuntuMono.zip" && \
   mkdir -p "/usr/share/fonts/ubuntu-mono-nerd" && \
   unzip "UbuntuMono.zip" -d "/usr/share/fonts/ubuntu-mono-nerd" && \
   rm "UbuntuMono.zip" && \
@@ -148,7 +148,7 @@ VOLUME /config
 
 RUN \
   echo "**** add icon ****" && \
-  curl -L -o \
+  curl -fL -o \
     /usr/share/selkies/www/icon.png \
     "https://rawcdn.githack.com/xpipe-io/xpipe/a097ae7a41131fa358b5343345557ad00a45c309/dist/logo/logo.png"
 
@@ -163,7 +163,8 @@ RUN  echo "**** install tool packages ****" && \
     screen \
     remmina-plugin-rdp && \
  apt-get autoclean && \
- apt-get autoremove -y
+ apt-get autoremove -y && \
+ rm -rf /var/lib/apt/lists/*
 
 RUN echo "**** kde tweaks ****" && \
     setcap -r /usr/bin/kwin_wayland
@@ -176,8 +177,10 @@ RUN echo "**** Move firefox ****" && dpkg-divert --rename --local /usr/bin/firef
 COPY /wl-clipboard /tmp
 
 RUN echo "**** Fix wl-clipboard ****" && \
-    if [ "$TARGETPLATFORM" = "linux/amd64" ]; then PLATFORM="amd64"; else PLATFORM="arm64"; fi && \
-    apt-get install --no-install-recommends -y "/tmp/wl-clipboard_2.3.0-1_$PLATFORM.deb"
+    PLATFORM="$(dpkg --print-architecture)" && \
+    apt-get update && \
+    apt-get install --no-install-recommends -y "/tmp/wl-clipboard_2.3.0-1_$PLATFORM.deb" && \
+    rm -rf /tmp/wl-clipboard_*.deb /var/lib/apt/lists/*
 
 COPY /root /
 

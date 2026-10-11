@@ -1,7 +1,10 @@
 #!/usr/bin/with-contenv bash
 
+STATE_DIR="/config/.local/share/tailscale"
+mkdir -p "$STATE_DIR"
+
 if [ -e /dev/net/tun ]; then
-  tailscaled --state=tailscaled.state
+  exec tailscaled --state="$STATE_DIR/tailscaled.state"
 else
-  tailscaled --state=tailscaled.state --tun=userspace-networking --socks5-server=localhost:1055 --outbound-http-proxy-listen=localhost:1055
+  exec tailscaled --state="$STATE_DIR/tailscaled.state" --tun=userspace-networking --socks5-server=localhost:1055 --outbound-http-proxy-listen=localhost:1055
 fi

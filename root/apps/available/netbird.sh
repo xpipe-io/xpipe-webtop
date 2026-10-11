@@ -7,3 +7,4 @@ sudo apt-get install -y netbird
 netbird version
 
 sudo touch "/etc/s6-overlay/s6-rc.d/user/contents.d/netbirdd"
+sudo s6-rc -u change netbirdd

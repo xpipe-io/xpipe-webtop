@@ -1,0 +1,7 @@
+services:
+  xpipe-webtop:
+    environment:
+      XPIPE_VPN: "netbird"
+    privileged: true
+    cap_add:
+      - NET_ADMIN

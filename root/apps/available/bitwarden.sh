@@ -3,8 +3,8 @@
 curl -L "https://bitwarden.com/download/?app=desktop&platform=linux&variant=deb" -o bw.deb
 sudo apt install -y ./bw.deb
 rm bw.deb
-sudo mv /usr/bin/bitwarden /usr/bin/bitwarden-sandbox
-echo -e '#!/bin/bash\n/usr/bin/bitwarden-sandbox --no-sandbox "$@"' | sudo tee /usr/bin/bitwarden
+sudo rm -f /usr/bin/bitwarden
+echo -e '#!/bin/bash\n/opt/Bitwarden/bitwarden --no-sandbox "$@"' | sudo tee /usr/bin/bitwarden
 sudo chmod a+x /usr/bin/bitwarden
 sudo sed -i 's#Exec=/opt/Bitwarden/bitwarden#Exec=/usr/bin/bitwarden#g' "/usr/share/applications/bitwarden.desktop"
 

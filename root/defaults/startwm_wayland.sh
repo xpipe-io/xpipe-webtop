@@ -13,7 +13,7 @@ dbus-run-session bash -l -c '
     KWIN_PID=$!
     sleep 2
 
-    /usr/lib/x86_64-linux-gnu/libexec/polkit-kde-authentication-agent-1
+    /usr/lib/$(uname -m)-linux-gnu/libexec/polkit-kde-authentication-agent-1 &
 
     # The autostart scripts are not run by KDE, so we have to do it manually
     nohup bash /defaults/autostart.sh &> $HOME/webtop-autostart.log & disown
